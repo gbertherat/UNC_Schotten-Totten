@@ -1,0 +1,163 @@
+@startuml
+skinparam linetype ortho
+skinparam nodesep 50
+skinparam ranksep 50
+
+package api {
+    package card {
+        enum Color {
+            BLUE
+            BROWN
+            GREEN
+            PURPLE
+            RED
+            YELLOW
+        }
+
+        class ClanCard {
+            {static}+NUM_CARDS_BY_COLOR = 9
+            -strength int
+            +getId() = color + value
+        }
+        ClanCard --> Color
+    }
+
+    package stock {
+        class Stock {
+            +draw(): ClanCard
+            +isEmpty(): boolean
+        }
+        Stock --> ClanCard
+
+        class StockFactories {
+            {static}+createClanStock: Stock
+        }
+        StockFactories ..> Stock
+    }
+
+    package combination {
+        interface CombinationSupport <<Functional>> {
+            supports(cards: List<ClanCard>): boolean
+        }
+        enum CombinationType {
+            COLOR_RUN
+            THREE_OF_KIND
+            COLOR
+            RUN
+            SUM
+            -supports(List<ClanCard>): boolean
+            {static}+findFor(List<ClanCard>): CombinationType
+            {static}-isColorRun((List<ClanCard>): boolean
+            {static}-isThreeOfKind((List<ClanCard>): boolean
+            {static}-isColor((List<ClanCard>): boolean
+            {static}-isRun((List<ClanCard>): boolean
+            {static}-isSum((List<ClanCard>): boolean
+        }
+        CombinationType --> CombinationSupport
+
+        class Combination <<Comparable>> {
+            -sum: int
+            +Combination(List<ClanCard>)
+            +compareTo(Combination): int
+        }
+        Combination --> CombinationType
+    }
+
+    package player {
+        class Hand {
+            +{static}HAND_SIZE = 6
+            +addCard(card: ClanCard)
+            +isFull(): boolean
+            +contains(card: ClanCard): boolean
+            +removeCard(card: ClanCard)
+        }
+        Hand --> "0..6" ClanCard
+        class Player {
+            -name: String
+        }
+        Player --> Hand
+    }
+
+    package border {
+        class StoneArea {
+            {static}-MAX_NUM_CARDS = 3
+            -own: boolean
+            +isOwn(): boolean
+            +isFull(): boolean
+        }
+        StoneArea --> Player
+        StoneArea --> "cards\n0..3" ClanCard
+        StoneArea --> "0..1" Combination
+
+        class Stone {
+            -id: int
+            -areas: Map<Player, StoneArea>
+            +isFullFor(player: Player): boolean
+            +addCardFor(player: Player, card: ClanCard)
+            +getAreaFor(player: Player): StoneArea
+        }
+        Stone --> "*" StoneArea
+        note on link : Each player have his own area
+
+        class Border {
+            {static}-NUM_STONES = 9
+        }
+        Border --> "9" Stone
+    }
+
+    package board {
+        class Board {
+            {static}+NUM_PLAYERS = 2
+            +getPlayers(): List<PLayer>
+            +getOpponent(player: Player):PLayer
+            +addPlayer(player: Player)
+            +removePlayer(player: Player)
+            +isFull(): boolean
+        }
+        Board --> "2" Player
+        Board --> "currentPlayer" Player
+        Board --> Border
+        Board --> "stock" Stock
+        Board ..> StockFactories
+    }
+
+    package game {
+
+        class GameOptions {
+            -created: Instant;
+            -name: String
+            +getCreated(): Instant
+            +getName(): String
+        }
+
+        enum GameStatus {
+            CREATED
+            STARTED
+            FINISHED
+            CANCELLED
+        }
+
+        class Game {
+            -id: int
+            +start(currentPlayer: Player)
+            +isFull(): boolean
+            +getPlayers(): List<PLayer>
+            +addPlayer(player: Player)
+            +removePlayer(player: Player)
+            +getOpponent(player: Player): Player
+        }
+        Game --> GameOptions
+        Game --> GameStatus
+        Game --> Board
+
+        class GameRegistry <<Singleton>> {
+            {static}+GAME_REGISTRY: GameRegistry
+            +createNewGame(options: GameOptions): Game
+            +findGame(id: int): Optional<Game>
+            +findAllWaitingGames(): List<Game>
+        }
+        GameRegistry --> "*" Game
+    }
+}
+
+@enduml

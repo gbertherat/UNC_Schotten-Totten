@@ -17,6 +17,6 @@ public class ClanCardTest {
 
     @Test
     public void testGetId(){
-        assertEquals("BLUE6", card.getId(), "Error in class card : method getId()");
+        assertEquals("BLUE5", card.getId(), "Error in class card : method getId()");
     }
 }

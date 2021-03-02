@@ -8,6 +8,11 @@ import com.vaadin.flow.router.Route;
 @Tag("st-main")
 public class MainView extends HtmlContainer {
     
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     public MainView() {
         this.add("Hello World");
     }

@@ -46,3 +46,4 @@ webpack.config.js
 webpack.generated.js
 /node/
 /node_modules/
+pnpm-debug.log

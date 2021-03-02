@@ -16,7 +16,7 @@
 	
 	<properties>
 		<frontend-maven-plugin.version>1.11.0</frontend-maven-plugin.version>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 		<node.version>v14.15.3</node.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<vaadin.version>18.0.5</vaadin.version>

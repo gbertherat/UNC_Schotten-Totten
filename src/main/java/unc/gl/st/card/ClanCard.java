@@ -1,12 +1,16 @@
 package unc.gl.st.card;
 
 public class ClanCard {
-    protected final int NUM_CARDS_BY_COLOR = 9;
+    public final int NUM_CARDS_BY_COLOR = 9;
     private int strength;
     private Color color;
 
-    public ClanCard(int strenght, Color color){
-        this.strength = strenght;
+    public ClanCard(int strength, Color color) throws Exception {
+        if(strength > 0 && strength <= NUM_CARDS_BY_COLOR){
+            this.strength = strength;
+        } else {
+            throw new Exception("Invalid card strength");
+        }
         this.color = color;
     }
 

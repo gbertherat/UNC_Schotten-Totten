@@ -17,4 +17,20 @@ public class ClanCard {
     public String getId(){
         return this.color.toString() + String.valueOf(this.strength);
     }
+
+    public int getStrength(){
+        return this.strength;
+    }
+
+    public void setStrength(int strength){
+        this.strength = strength;
+    }
+
+    public Color getColor(){
+        return this.color;
+    }
+
+    public void setColor(Color color){
+        this.color = color;
+    }
 }

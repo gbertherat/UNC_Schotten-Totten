@@ -2,16 +2,14 @@ package unc.gl.st.card;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-@RunWith(JUnit4.class)
 public class ClanCardTest {
-    private ClanCard card;
+    private static ClanCard card;
 
-    @org.junit.Before
-    public void setUp() throws Exception{
+    @BeforeAll
+    public static void setUp() throws Exception{
         card = new ClanCard(5, Color.BLUE);
     }
 

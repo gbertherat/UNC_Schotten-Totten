@@ -4,7 +4,7 @@ import unc.gl.st.card.ClanCard;
 
 import java.util.List;
 
-public class Combination {
+public class Combination implements Comparable<Combination>{
     private List<ClanCard> cards;
     private int sum;
 
@@ -38,11 +38,12 @@ public class Combination {
      * @param combination the combination to compare to
      * @return <p>1 if win <hr> 0 if tie <hr> -1 if lose</p>
      */
-    public int compareTo(Combination combination){
-        if(this.sum > combination.getSum()){
+    @Override
+    public int compareTo(Combination o) {
+        if(this.sum > o.getSum()){
             return 1;
         } 
-        else if(this.sum == combination.getSum()){
+        else if(this.sum == o.getSum()){
             return 0;
         }
         return -1;

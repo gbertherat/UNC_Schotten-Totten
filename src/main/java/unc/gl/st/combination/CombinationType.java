@@ -13,11 +13,7 @@ public class CombinationType{
         RUN,
         SUM
     }
-
-    private boolean supports(List<ClanCard> cards){
-        return false;
-    }
-
+    
     public Type findFor(Combination combination){
         List<ClanCard> cards = combination.getCards();
 

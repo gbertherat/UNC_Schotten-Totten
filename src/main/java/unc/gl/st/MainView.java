@@ -7,7 +7,7 @@ import com.vaadin.flow.router.Route;
 @Route
 @Tag("st-main")
 public class MainView extends HtmlContainer {
-    
+
     /**
      *
      */

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Hand {
     public static final int HAND_SIZE = 6;
-    private List<ClanCard> cards = new ArrayList<>();
+    private List<ClanCard> cards;
 
     public void addCard(ClanCard card) throws FullHandException {
         if (isFull()) {
@@ -30,4 +30,7 @@ public class Hand {
         return cards.contains(card);
     }
 
+    public Hand() {
+        this.cards = new ArrayList<>();
+    }
 }

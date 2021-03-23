@@ -1,7 +1,7 @@
 package unc.gl.st.card;
 
 public class ClanCard {
-    public final int NUM_CARDS_BY_COLOR = 9;
+    public static final int NUM_CARDS_BY_COLOR = 9;
     private int strength;
     private Color color;
 

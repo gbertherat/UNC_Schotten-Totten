@@ -5,7 +5,7 @@ public class ClanCard {
     private int strength;
     private Color color;
 
-    public ClanCard(int strength, Color color) throws Exception {
+    public ClanCard(int strength, Color color) {
         this.strength = strength;
         this.color = color;
     }

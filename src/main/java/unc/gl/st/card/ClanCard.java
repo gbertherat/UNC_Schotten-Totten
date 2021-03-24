@@ -6,11 +6,7 @@ public class ClanCard {
     private Color color;
 
     public ClanCard(int strength, Color color) throws Exception {
-        if(strength > 0 && strength <= NUM_CARDS_BY_COLOR){
-            this.strength = strength;
-        } else {
-            throw new Exception("Invalid card strength");
-        }
+        this.strength = strength;
         this.color = color;
     }
 
@@ -22,15 +18,7 @@ public class ClanCard {
         return this.strength;
     }
 
-    public void setStrength(int strength){
-        this.strength = strength;
-    }
-
     public Color getColor(){
         return this.color;
-    }
-
-    public void setColor(Color color){
-        this.color = color;
     }
 }

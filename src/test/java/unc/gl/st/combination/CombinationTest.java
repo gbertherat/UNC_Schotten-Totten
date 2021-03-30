@@ -17,15 +17,24 @@ public class CombinationTest {
 
     @BeforeAll
     public static void setUp() throws Exception{
-        ArrayList<ClanCard> cards = new ArrayList<>();
-        cards.add(new ClanCard(3, Color.BLUE));
-        combination1 = new Combination(cards);
+        ArrayList<ClanCard> cards1 = new ArrayList<>();
+        cards1.add(new ClanCard(1, Color.BLUE));
+        cards1.add(new ClanCard(5, Color.YELLOW));
+        cards1.add(new ClanCard(3, Color.RED));
 
-        cards.add(new ClanCard(1, Color.BLUE));
-        combination2 = new Combination(cards);
+        ArrayList<ClanCard> cards2 = new ArrayList<>();
+        cards2.add(new ClanCard(1, Color.BLUE));
+        cards2.add(new ClanCard(2, Color.YELLOW));
+        cards2.add(new ClanCard(3, Color.RED));
 
-        cards.add(new ClanCard(2, Color.BLUE));
-        combination3 = new Combination(cards);
+        ArrayList<ClanCard> cards3 = new ArrayList<>();
+        cards3.add(new ClanCard(1, Color.BLUE));
+        cards3.add(new ClanCard(2, Color.BLUE));
+        cards3.add(new ClanCard(3, Color.BLUE));
+    
+        combination1 = new Combination(cards1);
+        combination2 = new Combination(cards2);
+        combination3 = new Combination(cards3);
     }
 
     @Test

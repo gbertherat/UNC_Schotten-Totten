@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import unc.gl.st.board.Board;
+
 /* SINGLETON CLASS */
 public class GameRegistry {
     private List<Game> games;
@@ -31,7 +33,7 @@ public class GameRegistry {
      * @return a game object
      */
     public Game createNewGame(GameOptions options){
-        Game newGame = new Game(games.size(), options); // We created the game object
+        Game newGame = new Game(games.size(), new Board(), options); // We created the game object
         this.games.add(newGame); // We add the game object to the list of games
         return newGame;
     }

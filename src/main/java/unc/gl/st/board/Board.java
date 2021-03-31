@@ -3,6 +3,7 @@ package unc.gl.st.board;
 import unc.gl.st.border.Border;
 import unc.gl.st.player.Player;
 import unc.gl.st.stock.Stock;
+import unc.gl.st.stock.StockFactories;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class Board {
     public Board() {
         players = new ArrayList<>();
         border = new Border();
-        stock = new Stock();
+        stock = StockFactories.createClanStock();
     }
 
     public List<Player> getPlayers() {

@@ -1,10 +1,11 @@
 package unc.gl.st.combination;
 
 import unc.gl.st.card.ClanCard;
+import unc.gl.st.combination.CombinationType.Type;
 
 import java.util.List;
 
-public class Combination {
+public class Combination implements Comparable<Combination>{
     private List<ClanCard> cards;
     private int sum;
 
@@ -21,30 +22,35 @@ public class Combination {
         return this.cards;
     }
 
-    public void setCards(List<ClanCard> cards){
-        this.cards = cards;
-    }
-
     public int getSum(){
         return this.sum;
-    }
-
-    public void setSum(int sum){
-        this.sum = sum;
     }
 
     /**
      * This method allows for the comparison between two combinations
      * @param combination the combination to compare to
-     * @return <p>1 if win <hr> 0 if tie <hr> -1 if lose</p>
+     * @return <p>1 if win <hr> 0 if tie <hr> -1 if lose <hr> -2 if an error occured</p> 
      */
-    public int compareTo(Combination combination){
-        if(this.sum > combination.getSum()){
-            return 1;
-        } 
-        else if(this.sum == combination.getSum()){
-            return 0;
+    @Override
+    public int compareTo(Combination o) {
+        if(this.cards.size() != 3 || o.cards.size() != 3){
+            return -2;
         }
-        return -1;
+        Type type1 = CombinationType.findFor(this);
+        Type type2 = CombinationType.findFor(o);
+
+        if(type1.ordinal() > type2.ordinal()){
+            return -1;
+        } else if(type1.ordinal() == type2.ordinal()){
+            if(this.getSum() < o.getSum()){
+                return -1;
+            } else if(this.getSum() == o.getSum()){
+                return 0;
+            } else {
+                return 1;
+            }
+        } else {
+            return 1;
+        }
     }
 }

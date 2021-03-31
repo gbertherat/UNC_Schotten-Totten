@@ -36,9 +36,8 @@ public class Combination implements Comparable<Combination>{
         if(this.cards.size() != 3 || o.cards.size() != 3){
             return -2;
         }
-        CombinationType combType = new CombinationType();
-        Type type1 = combType.findFor(this);
-        Type type2 = combType.findFor(o);
+        Type type1 = CombinationType.findFor(this);
+        Type type2 = CombinationType.findFor(o);
 
         if(type1.ordinal() > type2.ordinal()){
             return -1;

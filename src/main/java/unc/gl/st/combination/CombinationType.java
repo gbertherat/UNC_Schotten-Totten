@@ -14,7 +14,7 @@ public class CombinationType{
         SUM
     }
     
-    public Type findFor(Combination combination){
+    public static Type findFor(Combination combination){
         List<ClanCard> cards = combination.getCards();
 
         if(isColorRun(cards)){
@@ -32,7 +32,7 @@ public class CombinationType{
         return Type.SUM;
     }
 
-    private boolean isColorRun(List<ClanCard> cards){
+    private static boolean isColorRun(List<ClanCard> cards){
         ClanCard ref = cards.get(0);
         Color colorRef = ref.getColor();
         int strengthRef = ref.getStrength();
@@ -46,7 +46,7 @@ public class CombinationType{
         return true;
     }
 
-    private boolean isThreeOfKind(List<ClanCard> cards){
+    private static boolean isThreeOfKind(List<ClanCard> cards){
         int ref = cards.get(0).getStrength();
 
         for(int i = 1; i < cards.size(); i++){
@@ -57,10 +57,10 @@ public class CombinationType{
         return true;
     }
 
-    private boolean isColor(List<ClanCard> cards){
+    private static boolean isColor(List<ClanCard> cards){
         Color ref = cards.get(0).getColor();
 
-        for(int i = 1; i < cards.size(); i++){
+        for (int i = 1; i < cards.size(); i++){
             if(cards.get(i).getColor() != ref){
                 return false;
             }
@@ -68,7 +68,7 @@ public class CombinationType{
         return true;
     }
 
-    private boolean isRun(List<ClanCard> cards){
+    private static boolean isRun(List<ClanCard> cards){
         int ref = cards.get(0).getStrength();
 
         for(int i = 1; i < cards.size(); i++){

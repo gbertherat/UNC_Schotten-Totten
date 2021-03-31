@@ -1,6 +1,6 @@
 package unc.gl.st.card;
 
-public class ClanCard {
+public class ClanCard implements Card{
     public static final int NUM_CARDS_BY_COLOR = 9;
     private int strength;
     private Color color;
@@ -11,9 +11,9 @@ public class ClanCard {
     }
 
     public String getId(){
-        return this.color.toString() + String.valueOf(this.strength);
+        return this.color + String.valueOf(this.strength);
     }
-
+    
     public int getStrength(){
         return this.strength;
     }

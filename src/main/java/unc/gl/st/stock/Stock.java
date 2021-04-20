@@ -5,7 +5,6 @@ import unc.gl.st.card.Card;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Stock {
     private Stack<Card> cardStack;

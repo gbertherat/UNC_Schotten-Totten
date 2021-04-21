@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import unc.gl.st.player.Player;
 
 public class GameTest {
-    private static GameRegistry registry;
     private static Game game;
     private static Player player;
 

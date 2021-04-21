@@ -1,0 +1,29 @@
+.main{
+    padding:0 !important;
+    margin:0 !important;
+    background-color:rgb(236, 236, 236);
+}
+
+.header{
+    width:100%;
+    text-align: center;
+    background-color: lightgray;
+}
+
+.header img{
+    margin:5px;
+}
+
+.mainButton{
+    height:70px;
+    width:500px;
+    margin:50px 0;
+}
+
+.footer{
+    color:white;
+    width: 100%;
+    padding:10px 0;
+    text-align: center;
+    background-color: gray;
+}

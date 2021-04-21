@@ -22,6 +22,10 @@
 		<vaadin.version>18.0.5</vaadin.version>
 	</properties>
 
+	<repositories>
+		
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.vaadin</groupId>

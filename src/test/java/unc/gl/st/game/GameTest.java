@@ -23,7 +23,7 @@ public class GameTest {
     @Test
     public void gameTest(){
         assertEquals(GameStatus.CREATED, game.getStatus());
-        game.start(player);
+        game.start();
         assertEquals(GameStatus.STARTED, game.getStatus());
     }
 }

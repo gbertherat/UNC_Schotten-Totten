@@ -6,8 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;

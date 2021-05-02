@@ -113,7 +113,14 @@ public class MainView extends HtmlContainer{
 
             if(playerTwoName.getValue().length() == 0){
                 Notification.show("Erreur: Veuillez remplir le champ 'Nom du joueur 2'", 5000, Position.TOP_CENTER);
+                return;
             }
+
+            if(playerOneName.getValue().equals(playerTwoName.getValue())){
+                Notification.show("Erreur: Veuillez choisir deux noms différents", 5000, Position.TOP_CENTER);
+                return;
+            }
+
             game = GameRegistry.getInstance().createNewGame(new GameOptions(playerOneName+"&"+playerTwoName));
             
             game.addPlayer(new Player(playerOneName.getValue()));
@@ -149,7 +156,14 @@ public class MainView extends HtmlContainer{
         gameLayout.add(playerLayout);
 
         /* BORDER */
+        HorizontalLayout topBorderLayout = new HorizontalLayout();
+        topBorderLayout.setSizeFull();
+
         HorizontalLayout borderLayout = new HorizontalLayout();
+
+        HorizontalLayout bottomBorderLayout = new HorizontalLayout();
+        bottomBorderLayout.setSizeFull();
+
         Border border = new Border();
 
         File dir = new File("src/main/webapp/img/tuile_borne");
@@ -183,12 +197,17 @@ public class MainView extends HtmlContainer{
                     cardImage.setClassName("carte");
                     cardImage.setVisible(false);
                     cardLayout.add(cardImage);
+                    
+                    try {
+                        hand.addCard(randCard);
+                    } catch (FullHandException e) {
+                        e.printStackTrace();
+                    }
                     done = true;
-                }
-                try {
-                    hand.addCard(randCard);
-                } catch (FullHandException e) {
-                    e.printStackTrace();
+
+                    System.out.println("ne contient pas");
+                } else {
+                    System.out.println("contient");
                 }
             }
         }

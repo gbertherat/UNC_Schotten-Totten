@@ -31,7 +31,12 @@ public class Hand {
     }
 
     public boolean contains(ClanCard card) {
-        return cards.contains(card);
+        for(ClanCard cards: this.cards){
+            if(card.getId().equals(cards.getId())){
+                return true;
+            }
+        }
+        return false;
     }
 
     public Hand() {

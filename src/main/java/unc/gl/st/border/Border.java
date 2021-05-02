@@ -18,4 +18,8 @@ public class Border {
     public List<Stone> getStones(){
         return this.stones;
     }
+
+    public int getNumStones(){
+        return NUM_STONES;
+    }
 }

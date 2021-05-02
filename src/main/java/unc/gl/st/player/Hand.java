@@ -10,6 +10,10 @@ public class Hand {
     public static final int HAND_SIZE = 6;
     private List<ClanCard> cards;
 
+    public List<ClanCard> getCards(){
+        return this.cards;
+    }
+
     public void addCard(ClanCard card) throws FullHandException {
         if (isFull()) {
             throw new FullHandException();

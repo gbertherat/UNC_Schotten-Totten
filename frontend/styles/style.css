@@ -14,10 +14,24 @@
     margin:5px;
 }
 
-.mainButton{
+.button{
     height:70px;
     width:500px;
     margin:50px 0;
+}
+
+.activePlayer{
+    font-size: 1.2vw;
+}
+
+.border{
+    width: 10vw;
+    height: auto;
+}
+
+.carte{
+    width:7vw;
+    height:auto;
 }
 
 .footer{

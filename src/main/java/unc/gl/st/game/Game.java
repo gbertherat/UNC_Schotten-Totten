@@ -73,9 +73,8 @@ public class Game {
 
     /**
      * Allows the start of a game
-     * @param currentPlayer The player hosting the game
      */
-    public void start(Player currentPlayer){
+    public void start(){
         if(this.status == GameStatus.CREATED){
             this.status = GameStatus.STARTED;
         }
@@ -99,7 +98,7 @@ public class Game {
 
     /**
      * Add a player to a game
-     * @param player The host of the game
+     * @param player The player to add
      */
     public void addPlayer(Player player){
         this.board.addPlayer(player);
@@ -107,7 +106,7 @@ public class Game {
 
     /**
      * Remove a player from a game
-     * @param player The host of the game
+     * @param player The player to remove
      */
     public void removePlayer(Player player){
         this.board.removePlayer(player);
@@ -115,7 +114,7 @@ public class Game {
 
     /**
      * Get opponent of a player
-     * @param player The player to get the opponent
+     * @param player The player to get the opponent of
      * @return A player
      */
     public Player getOpponent(Player player){

@@ -16,10 +16,18 @@ public class Stock {
     }
 
     public Card draw() throws EmptyStockException {
-        if ( isEmpty()){
+        if (isEmpty()){
             throw new EmptyStockException();
         }
         return cardStack.pop();
+    }
+
+    public Stack<Card> getCards(){
+        return this.cardStack;
+    }
+
+    public void removeTopCard(){
+        this.cardStack.pop();
     }
 
     public boolean isEmpty(){

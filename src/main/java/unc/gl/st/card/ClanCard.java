@@ -11,7 +11,7 @@ public class ClanCard implements Card{
     }
 
     public String getId(){
-        return this.color + String.valueOf(this.strength);
+        return this.color + "-" + String.valueOf(this.strength);
     }
     
     public int getStrength(){

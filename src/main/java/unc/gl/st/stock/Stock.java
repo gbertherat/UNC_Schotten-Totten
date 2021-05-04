@@ -1,6 +1,7 @@
 package unc.gl.st.stock;
 
 import unc.gl.st.card.Card;
+import unc.gl.st.exception.EmptyStockException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,11 +33,5 @@ public class Stock {
 
     public boolean isEmpty(){
         return this.cardStack.empty();
-    }
-
-    private class EmptyStockException extends Exception{
-        public EmptyStockException() {
-            super("The stock is empty");
-        }
     }
 }

@@ -1,6 +1,6 @@
 package unc.gl.st.player;
 
-import unc.gl.st.card.ClanCard;
+import unc.gl.st.card.Card;
 import unc.gl.st.exception.FullHandException;
 
 import java.util.ArrayList;
@@ -8,13 +8,13 @@ import java.util.List;
 
 public class Hand {
     public static final int HAND_SIZE = 6;
-    private List<ClanCard> cards;
+    private List<Card> cards;
 
-    public List<ClanCard> getCards(){
+    public List<Card> getCards(){
         return this.cards;
     }
 
-    public void addCard(ClanCard card) throws FullHandException {
+    public void addCard(Card card) throws FullHandException {
         if (isFull()) {
             throw new FullHandException();
         } else {
@@ -22,7 +22,7 @@ public class Hand {
         }
     }
 
-    public void removeCard(ClanCard card) {
+    public void removeCard(Card card) {
         cards.remove(card);
     }
 
@@ -30,8 +30,8 @@ public class Hand {
         return cards.size() == HAND_SIZE;
     }
 
-    public boolean contains(ClanCard card) {
-        for(ClanCard cards: this.cards){
+    public boolean contains(Card card) {
+        for(Card cards: this.cards){
             if(card.getId().equals(cards.getId())){
                 return true;
             }

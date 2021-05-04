@@ -1,8 +1,6 @@
 package unc.gl.st;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -24,8 +22,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
 import unc.gl.st.border.Border;
-import unc.gl.st.card.ClanCard;
-import unc.gl.st.card.Color;
+import unc.gl.st.card.Card;
+import unc.gl.st.exception.EmptyStockException;
 import unc.gl.st.exception.FullHandException;
 import unc.gl.st.game.Game;
 import unc.gl.st.game.GameOptions;
@@ -86,7 +84,7 @@ public class MainView extends HtmlContainer{
         return body;
     }
 
-    public VerticalLayout buildPlayerMenu(){
+    public VerticalLayout buildPlayerMenu() {
         VerticalLayout formLayout = new VerticalLayout();
         formLayout.setSizeFull();
         formLayout.setAlignItems(Alignment.CENTER);
@@ -131,7 +129,7 @@ public class MainView extends HtmlContainer{
         return formLayout;
     }
 
-    public VerticalLayout buildGame(Game game){
+    public VerticalLayout buildGame(Game game) {
         VerticalLayout gameLayout = new VerticalLayout();
         gameLayout.setSizeFull();
         gameLayout.setAlignItems(Alignment.CENTER);
@@ -182,31 +180,21 @@ public class MainView extends HtmlContainer{
         cardLayout.setSizeFull();
 
         Hand hand = activePlayer.getHand();
-        List<Color> colors = Collections.unmodifiableList(Arrays.asList(Color.values()));
+        Stock stock = StockFactories.createClanStock();
 
         for(int i = 0; i < Hand.HAND_SIZE; i++){
-            Boolean done = false;
-            while(!done){
-                Color randColor = colors.get(rand.nextInt(colors.size()));
-                int randStrength = rand.nextInt(ClanCard.NUM_CARDS_BY_COLOR)+1;
-                ClanCard randCard = new ClanCard(randStrength, randColor);
-                if(!hand.contains(randCard)){
-                    Image cardImage = new Image("/img/cartes_clan/" + randCard.getId().toLowerCase() + ".png", "Carte " + randCard.getId());
-                    cardImage.setClassName("carte");
-                    cardImage.setVisible(false);
-                    cardLayout.add(cardImage);
-                    
-                    try {
-                        hand.addCard(randCard);
-                    } catch (FullHandException e) {
-                        e.printStackTrace();
-                    }
-                    done = true;
-
-                    System.out.println("ne contient pas");
-                } else {
-                    System.out.println("contient");
-                }
+            try {
+                Card randCard = stock.draw();
+                hand.addCard(randCard);
+                
+                Image cardImage = new Image("/img/cartes_clan/" + randCard.getId().toLowerCase() + ".png", "Carte " + randCard.getId());
+                cardImage.setClassName("carte");
+                cardImage.setVisible(false);
+                cardLayout.add(cardImage);
+            } catch (FullHandException e) {
+                e.printStackTrace();
+            } catch (EmptyStockException e) {
+                e.printStackTrace();
             }
         }
 
@@ -237,7 +225,6 @@ public class MainView extends HtmlContainer{
         stockLayout.setAlignItems(Alignment.END);
         stockLayout.setJustifyContentMode(JustifyContentMode.END);
 
-        Stock stock = StockFactories.createClanStock();
         Image stockImage = new Image("/img/cartes_clan/back.png", "Carte Pioche");
         stockImage.setClassName("carte");
         stockLayout.add(stockImage);

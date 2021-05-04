@@ -32,6 +32,7 @@
 .carte{
     width:7vw;
     height:auto;
+    cursor:pointer;
 }
 
 .footer{

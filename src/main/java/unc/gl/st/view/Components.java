@@ -1,4 +1,4 @@
-package unc.gl.st;
+package unc.gl.st.view;
 
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.html.Footer;

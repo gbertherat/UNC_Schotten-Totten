@@ -16,10 +16,9 @@ public class view extends HtmlContainer{
      *
      */
     private static final long serialVersionUID = 1L;
-    private VerticalLayout mainLayout;
 
     public view(){
-        mainLayout = new VerticalLayout();
+        VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setClassName("main");
         mainLayout.setAlignItems(Alignment.CENTER);
 

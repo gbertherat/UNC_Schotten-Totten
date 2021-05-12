@@ -35,7 +35,7 @@
 }
 
 .smallcarte{
-    width:6vw;
+    width:5vw;
     height:auto;
 }
 
@@ -43,10 +43,6 @@
     width:7vw;
     height:auto;
     cursor:pointer;
-}
-
-.rotate{
-    transform: rotate(90deg);
 }
 
 .outline{
@@ -59,4 +55,33 @@
     padding:10px 0;
     text-align: center;
     background-color: gray;
+}
+
+/* VAADIN */
+[part~="content"] {
+    padding: 0px;
+    --lumo-font-size: 1rem;
+    --lumo-font-size-xxxl: 1.375rem;
+    --lumo-font-size-xxl: 1.125rem;
+    --lumo-font-size-xl: 1rem;
+    --lumo-font-size-l: 0.0rem;
+    --lumo-font-size-m: 0.0rem;
+    --lumo-font-size-s: 0.0rem;
+    --lumo-font-size-xs: 0.0rem;
+    --lumo-line-height-m: 1.0;
+    --lumo-line-height-s: 1.2;
+    --lumo-line-height-xs: 1.1;
+    --lumo-border-radius: 0.0em;
+    --lumo-size-xl: 0rem;
+    --lumo-size-l: 0rem;
+    --lumo-size-m: 0rem;
+    --lumo-size-s: 0rem;
+    --lumo-size-xs: 0rem;
+    --lumo-space-xl: 0rem;
+    --lumo-space-l: 0rem;
+    --lumo-space-m: 0rem;
+    --lumo-space-s: 0rem;
+    --lumo-space-xs: 0rem;
+    margin-top:0;
+    margin-right:0;
 }

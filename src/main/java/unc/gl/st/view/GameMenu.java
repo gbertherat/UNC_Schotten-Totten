@@ -40,7 +40,7 @@ public class GameMenu{
             activePlayerHand.removeCard(selectedCard);
 
             Image cardImage = new Image("/img/cartes_clan/" + selectedCard.getId().toLowerCase() + ".png", selectedCard.getId());
-            cardImage.setClassName("smallcarte rotate");
+            cardImage.setClassName("smallcarte");
             cardImage.getElement().setAttribute("style","margin:-3vw;");
 
             if(players.size() > activePlayer.getId()+1){
@@ -60,13 +60,6 @@ public class GameMenu{
         }
 
         return false;
-    }
-
-    private static void updateActivePlayer(HorizontalLayout playerLayout){
-        playerLayout.removeAll();
-        Label whoseTurnLabel = new Label("Tour de: " + activePlayer.getName());
-        whoseTurnLabel.setClassName("activePlayer");
-        playerLayout.add(whoseTurnLabel);
     }
 
     private static void updateHand(HorizontalLayout cardLayout){
@@ -96,7 +89,7 @@ public class GameMenu{
             cardLayout.add(cardImage);
         }
 
-        Button showCards = new Button("Montrer les cartes");
+        Button showCards = new Button("Montrer les cartes de " + activePlayer.getName());
         showCards.setClassName("button");
         showCards.addClickListener(ev -> {
             for (int i = 0; i < cardLayout.getComponentCount(); i++) {
@@ -157,8 +150,6 @@ public class GameMenu{
             players.get(i).setId(i);
         }
         activePlayer = players.get(rand.nextInt(players.size()));
-        updateActivePlayer(playerLayout);
-        gameLayout.add(playerLayout);
 
         /* BORDER */
         Border border = new Border();
@@ -184,7 +175,6 @@ public class GameMenu{
                     selectedStone = stone;
                     if(placeCardOnStone(gameLayout, stoneLayout)){
                         updateHand(cardLayout);
-                        updateActivePlayer(playerLayout);
                     }
                 });
                 stoneLayout.add(borderCardImage);

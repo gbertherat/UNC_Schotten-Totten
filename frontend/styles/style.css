@@ -24,6 +24,10 @@
     font-size: 1.2vw;
 }
 
+.noGap{
+    margin:0px;
+}
+
 .border{
     width: 10vw;
     height: auto;
@@ -31,7 +35,7 @@
 }
 
 .smallcarte{
-    width:5vw;
+    width:6vw;
     height:auto;
 }
 

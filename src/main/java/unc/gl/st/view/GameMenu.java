@@ -34,13 +34,14 @@ public class GameMenu{
     private static Stone selectedStone = null;
     private static final Stock stock = StockFactories.createClanStock();
 
-    private static boolean placeCardOnStone(VerticalLayout mainLayout, VerticalLayout stoneLayout, HorizontalLayout playerLayout){
+    private static boolean placeCardOnStone(VerticalLayout mainLayout, VerticalLayout stoneLayout){
         if(selectedCard != null && selectedStone != null){
             selectedStone.addCardFor(activePlayer, selectedCard);
             activePlayerHand.removeCard(selectedCard);
 
             Image cardImage = new Image("/img/cartes_clan/" + selectedCard.getId().toLowerCase() + ".png", selectedCard.getId());
             cardImage.setClassName("smallcarte rotate");
+            cardImage.getElement().setAttribute("style","margin:-3vw;");
 
             if(players.size() > activePlayer.getId()+1){
                 activePlayer = players.get(activePlayer.getId()+1);
@@ -49,11 +50,6 @@ public class GameMenu{
                 activePlayer = players.get(0);
                 stoneLayout.addComponentAsFirst(cardImage);
             }
-
-            playerLayout.removeAll();
-            Label whoseTurnLabel = new Label("Tour de: " + activePlayer.getName());
-            whoseTurnLabel.setClassName("activePlayer");
-            playerLayout.add(whoseTurnLabel);
 
             selectedCard = null;
             selectedStone = null;
@@ -64,6 +60,13 @@ public class GameMenu{
         }
 
         return false;
+    }
+
+    private static void updateActivePlayer(HorizontalLayout playerLayout){
+        playerLayout.removeAll();
+        Label whoseTurnLabel = new Label("Tour de: " + activePlayer.getName());
+        whoseTurnLabel.setClassName("activePlayer");
+        playerLayout.add(whoseTurnLabel);
     }
 
     private static void updateHand(HorizontalLayout cardLayout){
@@ -141,7 +144,6 @@ public class GameMenu{
         playerLayout.setJustifyContentMode(JustifyContentMode.CENTER);
 
         HorizontalLayout borderLayout = new HorizontalLayout();
-        borderLayout.setJustifyContentMode(JustifyContentMode.CENTER);
 
         HorizontalLayout cardLayout = new HorizontalLayout();
 
@@ -155,6 +157,7 @@ public class GameMenu{
             players.get(i).setId(i);
         }
         activePlayer = players.get(rand.nextInt(players.size()));
+        updateActivePlayer(playerLayout);
         gameLayout.add(playerLayout);
 
         /* BORDER */
@@ -166,19 +169,22 @@ public class GameMenu{
         if(files != null) {
             for (int i = 0; i < border.getNumStones(); i++) {
                 VerticalLayout stoneLayout = new VerticalLayout();
+                stoneLayout.setClassName("noGap");
                 stoneLayout.setPadding(false);
                 stoneLayout.setAlignItems(Alignment.CENTER);
+                stoneLayout.setJustifyContentMode(JustifyContentMode.CENTER);
 
                 String borderCardPath = files[rand.nextInt(files.length)].getPath();
                 borderCardPath = borderCardPath.replace("src\\main\\webapp", "");
                 Image borderCardImage = new Image(borderCardPath, "Carte Frontière " + i);
-                borderCardImage.setClassName("border");
+                borderCardImage.setClassName("border noGap");
 
                 Stone stone = border.getStones().get(i);
                 borderCardImage.addClickListener(ev -> {
                     selectedStone = stone;
-                    if(placeCardOnStone(gameLayout, stoneLayout, playerLayout)){
+                    if(placeCardOnStone(gameLayout, stoneLayout)){
                         updateHand(cardLayout);
+                        updateActivePlayer(playerLayout);
                     }
                 });
                 stoneLayout.add(borderCardImage);

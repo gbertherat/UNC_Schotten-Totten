@@ -1,24 +1,25 @@
 package unc.gl.st.combination;
 
+import unc.gl.st.card.Card;
 import unc.gl.st.card.ClanCard;
 import unc.gl.st.combination.CombinationType.Type;
 
 import java.util.List;
 
 public class Combination implements Comparable<Combination>{
-    private List<ClanCard> cards;
+    private List<Card> cards;
     private int sum;
 
-    public Combination(List<ClanCard> cards){
+    public Combination(List<Card> cards){
         this.cards = cards;
         this.sum = 0;
 
-        for (ClanCard clanCard : this.cards) {
+        for (Card clanCard : this.cards) {
             this.sum += clanCard.getStrength();
         }
     }
 
-    public List<ClanCard> getCards(){
+    public List<Card> getCards(){
         return this.cards;
     }
 

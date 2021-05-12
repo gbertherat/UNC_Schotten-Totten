@@ -54,7 +54,7 @@ public class PlayerMenu {
             game.addPlayer(new Player(playerOneName.getValue()));
             game.addPlayer(new Player(playerTwoName.getValue()));
 
-            mainLayout.replace(formLayout, GameMenu.build(mainLayout, game));
+            mainLayout.replace(formLayout, GameMenu.build(game));
         });
 
         formLayout.add(valider);

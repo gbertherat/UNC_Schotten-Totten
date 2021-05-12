@@ -1,5 +1,6 @@
 package unc.gl.st.combination;
 
+import unc.gl.st.card.Card;
 import unc.gl.st.card.ClanCard;
 import unc.gl.st.card.Color;
 
@@ -15,7 +16,7 @@ public class CombinationType{
     }
     
     public static Type findFor(Combination combination){
-        List<ClanCard> cards = combination.getCards();
+        List<Card> cards = combination.getCards();
 
         if(isColorRun(cards)){
             return Type.COLOR_RUN;
@@ -32,8 +33,8 @@ public class CombinationType{
         return Type.SUM;
     }
 
-    private static boolean isColorRun(List<ClanCard> cards){
-        ClanCard ref = cards.get(0);
+    private static boolean isColorRun(List<Card> cards){
+        Card ref = cards.get(0);
         Color colorRef = ref.getColor();
         int strengthRef = ref.getStrength();
 
@@ -46,7 +47,7 @@ public class CombinationType{
         return true;
     }
 
-    private static boolean isThreeOfKind(List<ClanCard> cards){
+    private static boolean isThreeOfKind(List<Card> cards){
         int ref = cards.get(0).getStrength();
 
         for(int i = 1; i < cards.size(); i++){
@@ -57,7 +58,7 @@ public class CombinationType{
         return true;
     }
 
-    private static boolean isColor(List<ClanCard> cards){
+    private static boolean isColor(List<Card> cards){
         Color ref = cards.get(0).getColor();
 
         for (int i = 1; i < cards.size(); i++){
@@ -68,7 +69,7 @@ public class CombinationType{
         return true;
     }
 
-    private static boolean isRun(List<ClanCard> cards){
+    private static boolean isRun(List<Card> cards){
         int ref = cards.get(0).getStrength();
 
         for(int i = 1; i < cards.size(); i++){

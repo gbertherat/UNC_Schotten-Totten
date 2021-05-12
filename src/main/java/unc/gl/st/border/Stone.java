@@ -3,6 +3,7 @@ package unc.gl.st.border;
 import java.util.HashMap;
 import java.util.Map;
 
+import unc.gl.st.card.Card;
 import unc.gl.st.card.ClanCard;
 import unc.gl.st.combination.Combination;
 import unc.gl.st.player.Player;
@@ -45,7 +46,7 @@ public class Stone {
         return area.isFull();
     }
 
-    public void addCardFor(Player player, ClanCard card){
+    public void addCardFor(Player player, Card card){
         StoneArea area = getAreaFor(player);
         if(area == null){
             area = new StoneArea();

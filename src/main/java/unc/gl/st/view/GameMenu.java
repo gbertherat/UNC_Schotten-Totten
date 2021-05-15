@@ -83,7 +83,12 @@ public class GameMenu{
                 int nbAdjacentOwned = 1;
                 while(selectedStone.getId()+i <= border.getNumStones()-1 && border.getStones().get(selectedStone.getId()+i).getOwnBy() == ownByPlayer
                         || selectedStone.getId()-i >= 0 && border.getStones().get(selectedStone.getId()-i).getOwnBy() == ownByPlayer){
-                    nbAdjacentOwned++;
+                    if(selectedStone.getId()+i <= border.getNumStones()-1 && border.getStones().get(selectedStone.getId()+i).getOwnBy() == ownByPlayer
+                            && selectedStone.getId()-i >= 0 && border.getStones().get(selectedStone.getId()-i).getOwnBy() == ownByPlayer){
+                        nbAdjacentOwned += 2;
+                    } else {
+                        nbAdjacentOwned++;
+                    }
                     i++;
                 }
 

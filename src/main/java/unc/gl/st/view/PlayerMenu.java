@@ -34,13 +34,13 @@ public class PlayerMenu {
         valider.setId("submitButton");
 
         valider.addClickListener(ev -> {
-            if(playerOneName.getValue().length() == 0){
-                Notification.show("Erreur: Veuillez remplir le champ 'Nom du joueur 1'", 5000, Position.TOP_CENTER);
+            if(playerOneName.getValue().length() == 0 || playerOneName.getValue().length() > 10){
+                Notification.show("Erreur: Veuillez entrer une valeur valide pour 'Nom du joueur 1'", 5000, Position.TOP_CENTER);
                 return;
             }
 
-            if(playerTwoName.getValue().length() == 0){
-                Notification.show("Erreur: Veuillez remplir le champ 'Nom du joueur 2'", 5000, Position.TOP_CENTER);
+            if(playerTwoName.getValue().length() == 0 || playerTwoName.getValue().length() > 10){
+                Notification.show("Erreur: Veuillez entrer une valeur valide pour 'Nom du joueur 2'", 5000, Position.TOP_CENTER);
                 return;
             }
 

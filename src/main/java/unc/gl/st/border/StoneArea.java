@@ -11,7 +11,7 @@ public class StoneArea {
     private List<Card> cards;
 
     public StoneArea(){
-        this.cards = new ArrayList<Card>();
+        this.cards = new ArrayList<>();
     }
 
     public boolean isFull(){

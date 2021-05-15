@@ -25,13 +25,17 @@
 }
 
 .noGap{
-    margin:0px;
+    margin:0;
 }
 
 .border{
     width: 10vw;
     height: auto;
     cursor:pointer;
+}
+
+.score{
+    font-size: 1vw;
 }
 
 .smallcarte{
@@ -46,7 +50,15 @@
 }
 
 .outline{
-    outline: solid 5px rgba(0, 255, 0, 0.5);
+    outline: solid 4px rgba(0, 255, 0, 0.5);
+}
+
+.winningArea{
+    outline: solid 3px rgba(0, 0, 255, 0.5);
+}
+
+.win{
+    font-size: 2vw;
 }
 
 .footer{
@@ -55,33 +67,4 @@
     padding:10px 0;
     text-align: center;
     background-color: gray;
-}
-
-/* VAADIN */
-[part~="content"] {
-    padding: 0px;
-    --lumo-font-size: 1rem;
-    --lumo-font-size-xxxl: 1.375rem;
-    --lumo-font-size-xxl: 1.125rem;
-    --lumo-font-size-xl: 1rem;
-    --lumo-font-size-l: 0.0rem;
-    --lumo-font-size-m: 0.0rem;
-    --lumo-font-size-s: 0.0rem;
-    --lumo-font-size-xs: 0.0rem;
-    --lumo-line-height-m: 1.0;
-    --lumo-line-height-s: 1.2;
-    --lumo-line-height-xs: 1.1;
-    --lumo-border-radius: 0.0em;
-    --lumo-size-xl: 0rem;
-    --lumo-size-l: 0rem;
-    --lumo-size-m: 0rem;
-    --lumo-size-s: 0rem;
-    --lumo-size-xs: 0rem;
-    --lumo-space-xl: 0rem;
-    --lumo-space-l: 0rem;
-    --lumo-space-m: 0rem;
-    --lumo-space-s: 0rem;
-    --lumo-space-xs: 0rem;
-    margin-top:0;
-    margin-right:0;
 }

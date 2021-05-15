@@ -29,7 +29,7 @@ public class Combination implements Comparable<Combination>{
 
     /**
      * This method allows for the comparison between two combinations
-     * @param combination the combination to compare to
+     * @param o the combination to compare to
      * @return <p>1 if win <hr> 0 if tie <hr> -1 if lose <hr> -2 if an error occured</p> 
      */
     @Override
@@ -43,13 +43,7 @@ public class Combination implements Comparable<Combination>{
         if(type1.ordinal() > type2.ordinal()){
             return -1;
         } else if(type1.ordinal() == type2.ordinal()){
-            if(this.getSum() < o.getSum()){
-                return -1;
-            } else if(this.getSum() == o.getSum()){
-                return 0;
-            } else {
-                return 1;
-            }
+            return Integer.compare(this.getSum(), o.getSum());
         } else {
             return 1;
         }

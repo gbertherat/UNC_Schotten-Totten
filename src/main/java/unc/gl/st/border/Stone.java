@@ -1,8 +1,12 @@
 package unc.gl.st.border;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.vaadin.flow.component.html.Image;
 import unc.gl.st.card.Card;
 import unc.gl.st.card.ClanCard;
 import unc.gl.st.combination.Combination;
@@ -10,12 +14,14 @@ import unc.gl.st.player.Player;
 
 public class Stone {
     private int id;
+    private Image image;
     private Map<Player, StoneArea> areas;
     private Player ownBy;
     private Player firstPlayerToPlace3Cards;
 
-    public Stone(int id){
+    public Stone(int id, Image image){
         this.id = id;
+        this.image = image;
         this.ownBy = null;
         this.areas = new HashMap<>();
         this.firstPlayerToPlace3Cards = null;
@@ -37,12 +43,23 @@ public class Stone {
         this.ownBy = player;
     }
 
+    public Image getImage(){
+        return this.image;
+    }
+
+    public void setImage(Image image){
+        this.image = image;
+    }
+
     public StoneArea getAreaFor(Player player){
         return areas.get(player);
     } 
 
     public boolean isFullFor(Player player){
         StoneArea area = getAreaFor(player);
+        if(area == null){
+            return false;
+        }
         return area.isFull();
     }
 
@@ -53,16 +70,22 @@ public class Stone {
             areas.put(player, area);
         }
 
-        if(!area.isFull()){
+        if(!isFullFor(player)) {
             area.addCard(card);
         }
 
-        if(area.isFull() && firstPlayerToPlace3Cards == null){
+        if (isFullFor(player) && firstPlayerToPlace3Cards == null) {
             firstPlayerToPlace3Cards = player;
         }
 
-        if(area.isFull()){
-            fightForStone();
+        if(areas.size() > 1) {
+            List<Player> players = new ArrayList<>(areas.keySet());
+            Player player1 = players.get(0);
+            Player player2 = players.get(1);
+
+            if (isFullFor(player1) && isFullFor(player2)) {
+                fightForStone();
+            }
         }
     }
 
@@ -82,7 +105,7 @@ public class Stone {
 
             int result = combination1.compareTo(combination2);
 
-            if(result == -1){
+            if(result < 0){
                 this.setOwnBy(player2);
             } else if(result == 0){
                 this.setOwnBy(this.firstPlayerToPlace3Cards);

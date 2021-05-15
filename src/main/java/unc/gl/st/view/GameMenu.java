@@ -14,12 +14,12 @@ import unc.gl.st.card.Card;
 import unc.gl.st.exception.EmptyStockException;
 import unc.gl.st.exception.FullHandException;
 import unc.gl.st.game.Game;
+import unc.gl.st.game.GameStatus;
 import unc.gl.st.player.Hand;
 import unc.gl.st.player.Player;
 import unc.gl.st.stock.Stock;
 import unc.gl.st.stock.StockFactories;
 
-import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -30,36 +30,78 @@ public class GameMenu{
     private static Player activePlayer = null;
     private static Hand activePlayerHand = null;
 
+    private static Player winningPlayer = null;
+
+    private static Border border = null;
+
     private static Card selectedCard = null;
     private static Stone selectedStone = null;
     private static final Stock stock = StockFactories.createClanStock();
 
-    private static boolean placeCardOnStone(VerticalLayout mainLayout, VerticalLayout stoneLayout){
-        if(selectedCard != null && selectedStone != null){
+    private static void gameWonBy(HorizontalLayout handLayout, HorizontalLayout scoreLayout){
+        if(winningPlayer != null){
+            System.out.println(winningPlayer.getName() + " a gagné la partie!");
+            handLayout.removeAll();
+            scoreLayout.removeAll();
+
+            Label winningLabel = new Label(winningPlayer.getName() + " a gagné la partie!");
+            winningLabel.setClassName("win");
+            scoreLayout.add(winningLabel);
+        }
+    }
+
+    private static int placeCardOnStone(VerticalLayout stoneLayout){
+        if(selectedCard != null && selectedStone != null && !selectedStone.isFullFor(activePlayer)){
             selectedStone.addCardFor(activePlayer, selectedCard);
             activePlayerHand.removeCard(selectedCard);
 
-            Image cardImage = new Image("/img/cartes_clan/" + selectedCard.getId().toLowerCase() + ".png", selectedCard.getId());
-            cardImage.setClassName("smallcarte");
-            cardImage.getElement().setAttribute("style","margin:-3vw;");
-
+            Image image = new Image(selectedCard.getImage().getSrc(), selectedCard.getId());
+            image.setClassName("smallcarte");
+            image.getElement().setAttribute("style","margin:-3vw;");
             if(players.size() > activePlayer.getId()+1){
                 activePlayer = players.get(activePlayer.getId()+1);
-                stoneLayout.add(cardImage);
+                stoneLayout.addComponentAsFirst(image);
             } else {
                 activePlayer = players.get(0);
-                stoneLayout.addComponentAsFirst(cardImage);
+                stoneLayout.add(image);
+            }
+
+            if(selectedStone.getOwnBy() != null){
+                for(Iterator<Component> ite = stoneLayout.getChildren().iterator(); ite.hasNext();) {
+                    Component item = ite.next();
+                    for(Card card : selectedStone.getAreas().get(selectedStone.getOwnBy()).getCards()){
+                        if(card.getImage().getElement().getAttribute("alt").equals(item.getElement().getAttribute("alt"))){
+                            item.getElement().setAttribute("class","smallcarte winningArea");
+                        }
+                    }
+                }
+
+                Player ownByPlayer = selectedStone.getOwnBy();
+                ownByPlayer.setScore(ownByPlayer.getScore()+1);
+
+                int i = 1;
+                int nbAdjacentOwned = 1;
+                while(selectedStone.getId()+i <= border.getNumStones()-1 && border.getStones().get(selectedStone.getId()+i).getOwnBy() == ownByPlayer
+                        || selectedStone.getId()-i >= 0 && border.getStones().get(selectedStone.getId()-i).getOwnBy() == ownByPlayer){
+                    nbAdjacentOwned++;
+                    i++;
+                }
+
+                if(nbAdjacentOwned >= 3 || ownByPlayer.getScore() >= 5){
+                    winningPlayer = ownByPlayer;
+                    return 2;
+                }
             }
 
             selectedCard = null;
             selectedStone = null;
 
-            clearOutlines(mainLayout);
+            clearOutlines();
 
-            return true;
+            return 1;
         }
 
-        return false;
+        return 0;
     }
 
     private static void updateHand(HorizontalLayout cardLayout){
@@ -69,21 +111,24 @@ public class GameMenu{
         int nbCardsToAdd = Hand.HAND_SIZE - activePlayerHand.getCards().size();
         for(int i = 0; i < nbCardsToAdd; i++){
             try {
-                Card randCard = stock.draw();
-                activePlayerHand.addCard(randCard);
+                if (!stock.isEmpty()) {
+                    Card randCard = stock.draw();
+                    activePlayerHand.addCard(randCard);
+                }
             } catch (FullHandException | EmptyStockException e) {
                 e.printStackTrace();
             }
         }
 
         for(Card card : activePlayerHand.getCards()){
-            Image cardImage = new Image("/img/cartes_clan/" + card.getId().toLowerCase() + ".png", card.getId());
+            Image cardImage = card.getImage();
             cardImage.setClassName("carte");
             cardImage.setVisible(false);
 
             cardImage.addClickListener(ev -> {
                 selectedCard = card;
-                addOutline(cardLayout, cardImage, "carte");
+                clearOutlines();
+                selectedCard.getImage().setClassName("carte outline");
             });
 
             cardLayout.add(cardImage);
@@ -100,28 +145,28 @@ public class GameMenu{
         cardLayout.add(showCards);
     }
 
-    private static void addOutline(Component layout, Image image, String name){
-        for(Iterator<Component> iterator = layout.getChildren().iterator(); iterator.hasNext();){
-            Component item = iterator.next();
-            item.getElement().setAttribute("class",name);
-        }
-        image.setClassName(name + " outline");
+    private static void updateScore(HorizontalLayout layout){
+        layout.removeAll();
+
+        Label scores = new Label("Scores:");
+        scores.setClassName("score");
+
+        Player player1 = players.get(0);
+        Label player1Score = new Label(player1.getName() + ": " + player1.getScore());
+        player1Score.setClassName("score");
+
+        Player player2 = players.get(1);
+        Label player2Score = new Label(player2.getName() + ": " + player2.getScore());
+        player2Score.setClassName("score");
+
+        layout.add(scores);
+        layout.add(player1Score);
+        layout.add(player2Score);
     }
 
-    private static void clearOutlines(VerticalLayout gameLayout){
-        for(Iterator<Component> mainIte = gameLayout.getChildren().iterator(); mainIte.hasNext();){
-            Component layout = mainIte.next();
-
-            if(layout.getClass().equals(HorizontalLayout.class) || layout.getClass().equals(VerticalLayout.class)){
-                for(Iterator<Component> subIte = layout.getChildren().iterator(); subIte.hasNext();) {
-                    Component item = subIte.next();
-                    if(item.getElement().getAttribute("class") != null && item.getElement().getAttribute("class").contains("outline")) {
-                        String classNames = item.getElement().getAttribute("class");
-                        classNames = classNames.replace("outline", "");
-                        item.getElement().setAttribute("class", classNames);
-                    }
-                }
-            }
+    private static void clearOutlines(){
+        for(Card card : activePlayer.getHand().getCards()){
+            card.getImage().setClassName("carte");
         }
     }
 
@@ -138,7 +183,9 @@ public class GameMenu{
 
         HorizontalLayout borderLayout = new HorizontalLayout();
 
-        HorizontalLayout cardLayout = new HorizontalLayout();
+        HorizontalLayout handLayout = new HorizontalLayout();
+
+        HorizontalLayout scoreLayout = new HorizontalLayout();
 
         Random rand = new Random();
 
@@ -152,41 +199,51 @@ public class GameMenu{
         activePlayer = players.get(rand.nextInt(players.size()));
 
         /* BORDER */
-        Border border = new Border();
+        border = new Border();
+        VerticalLayout playerSidesLayout = new VerticalLayout();
+        playerSidesLayout.setSizeFull();
+        playerSidesLayout.setJustifyContentMode(JustifyContentMode.CENTER);
 
-        File dir = new File("src/main/webapp/img/tuile_borne");
-        File[] files = dir.listFiles();
+        playerSidesLayout.add(
+                new Label(players.get(0).getName()),
+                new Label(players.get(1).getName())
+        );
+        borderLayout.add(playerSidesLayout);
 
-        if(files != null) {
-            for (int i = 0; i < border.getNumStones(); i++) {
-                VerticalLayout stoneLayout = new VerticalLayout();
-                stoneLayout.setClassName("noGap");
-                stoneLayout.setPadding(false);
-                stoneLayout.setAlignItems(Alignment.CENTER);
-                stoneLayout.setJustifyContentMode(JustifyContentMode.CENTER);
+        for(Stone stone: border.getStones()) {
+            VerticalLayout stoneLayout = new VerticalLayout();
+            stoneLayout.setClassName("noGap");
+            stoneLayout.setPadding(false);
+            stoneLayout.setAlignItems(Alignment.CENTER);
+            stoneLayout.setJustifyContentMode(JustifyContentMode.CENTER);
 
-                String borderCardPath = files[rand.nextInt(files.length)].getPath();
-                borderCardPath = borderCardPath.replace("src\\main\\webapp", "");
-                Image borderCardImage = new Image(borderCardPath, "Carte Frontière " + i);
-                borderCardImage.setClassName("border noGap");
+            Image borderCardImage = stone.getImage();
 
-                Stone stone = border.getStones().get(i);
-                borderCardImage.addClickListener(ev -> {
-                    selectedStone = stone;
-                    if(placeCardOnStone(gameLayout, stoneLayout)){
-                        updateHand(cardLayout);
-                    }
-                });
-                stoneLayout.add(borderCardImage);
-                borderLayout.add(stoneLayout);
-            }
+            borderCardImage.addClickListener(ev -> {
+                selectedStone = stone;
+
+                int result = placeCardOnStone(stoneLayout);
+                if(result == 1){
+                    updateHand(handLayout);
+                    updateScore(scoreLayout);
+                } else if(result == 2){
+                    gameWonBy(handLayout, scoreLayout);
+                    game.setStatus(GameStatus.FINISHED);
+                }
+            });
+            stoneLayout.add(borderCardImage);
+            borderLayout.add(stoneLayout);
         }
 
         gameLayout.add(borderLayout);
 
         /* HAND */
-        updateHand(cardLayout);
-        gameLayout.add(cardLayout);
+        updateHand(handLayout);
+        gameLayout.add(handLayout);
+
+        /* SCORE */
+        updateScore(scoreLayout);
+        gameLayout.add(scoreLayout);
 
         return gameLayout;
     }

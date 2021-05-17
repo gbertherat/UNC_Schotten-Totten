@@ -114,14 +114,14 @@ public class GameMenu{
         activePlayerHand = activePlayer.getHand();
 
         int nbCardsToAdd = Hand.HAND_SIZE - activePlayerHand.getCards().size();
-        for(int i = 0; i < nbCardsToAdd; i++){
+        for(int i = 0; i < nbCardsToAdd; i++) {
             try {
-                if (!stock.isEmpty()) {
-                    Card randCard = stock.draw();
-                    activePlayerHand.addCard(randCard);
-                }
-            } catch (FullHandException | EmptyStockException e) {
+                Card randCard = stock.draw();
+                activePlayerHand.addCard(randCard);
+            } catch (FullHandException e)  {
                 e.printStackTrace();
+            } catch (EmptyStockException e) {
+                System.out.println("La pioche est vide!");
             }
         }
 

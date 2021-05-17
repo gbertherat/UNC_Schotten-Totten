@@ -13,18 +13,14 @@ public class StockFactories {
     public static Stock createClanStock() {
         ArrayList<Card> cards = new ArrayList<>();
 
-        for (Color color : Color.values()) {
-            for (int num : IntStream.rangeClosed(1, ClanCard.NUM_CARDS_BY_COLOR).toArray()) {
-                cards.add(new ClanCard(num, color));
-            }
-        }
-
         Arrays.stream(Color.values())
                 .forEach(color ->
                         IntStream.rangeClosed(1, ClanCard.NUM_CARDS_BY_COLOR)
                                 .forEach(num -> cards.add(new ClanCard(num, color)))
                 );
-
+        for(Card card : cards){
+            System.out.println(card.getId());
+        }
         return new Stock(cards);
     }
 

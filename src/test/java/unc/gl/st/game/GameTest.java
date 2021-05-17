@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import unc.gl.st.player.Player;
 
 public class GameTest {
-    private static GameRegistry registry;
     private static Game game;
     private static Player player;
 
@@ -24,7 +23,7 @@ public class GameTest {
     @Test
     public void gameTest(){
         assertEquals(GameStatus.CREATED, game.getStatus());
-        game.start(player);
+        game.start();
         assertEquals(GameStatus.STARTED, game.getStatus());
     }
 }

@@ -1,24 +1,25 @@
 package unc.gl.st.combination;
 
+import unc.gl.st.card.Card;
 import unc.gl.st.card.ClanCard;
 import unc.gl.st.combination.CombinationType.Type;
 
 import java.util.List;
 
 public class Combination implements Comparable<Combination>{
-    private List<ClanCard> cards;
+    private List<Card> cards;
     private int sum;
 
-    public Combination(List<ClanCard> cards){
+    public Combination(List<Card> cards){
         this.cards = cards;
         this.sum = 0;
 
-        for (ClanCard clanCard : this.cards) {
+        for (Card clanCard : this.cards) {
             this.sum += clanCard.getStrength();
         }
     }
 
-    public List<ClanCard> getCards(){
+    public List<Card> getCards(){
         return this.cards;
     }
 
@@ -28,7 +29,7 @@ public class Combination implements Comparable<Combination>{
 
     /**
      * This method allows for the comparison between two combinations
-     * @param combination the combination to compare to
+     * @param o the combination to compare to
      * @return <p>1 if win <hr> 0 if tie <hr> -1 if lose <hr> -2 if an error occured</p> 
      */
     @Override
@@ -42,13 +43,7 @@ public class Combination implements Comparable<Combination>{
         if(type1.ordinal() > type2.ordinal()){
             return -1;
         } else if(type1.ordinal() == type2.ordinal()){
-            if(this.getSum() < o.getSum()){
-                return -1;
-            } else if(this.getSum() == o.getSum()){
-                return 0;
-            } else {
-                return 1;
-            }
+            return Integer.compare(this.getSum(), o.getSum());
         } else {
             return 1;
         }

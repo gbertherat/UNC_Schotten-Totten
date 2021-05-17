@@ -1,6 +1,7 @@
 package unc.gl.st.stock;
 
 import unc.gl.st.card.Card;
+import unc.gl.st.exception.EmptyStockException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,19 +17,21 @@ public class Stock {
     }
 
     public Card draw() throws EmptyStockException {
-        if ( isEmpty()){
+        if (isEmpty()){
             throw new EmptyStockException();
         }
         return cardStack.pop();
     }
 
-    public boolean isEmpty(){
-        return this.cardStack.empty();
+    public Stack<Card> getCards(){
+        return this.cardStack;
     }
 
-    private class EmptyStockException extends Exception{
-        public EmptyStockException() {
-            super("The stock is empty");
-        }
+    public void removeTopCard(){
+        this.cardStack.pop();
+    }
+
+    public boolean isEmpty(){
+        return this.cardStack.empty();
     }
 }

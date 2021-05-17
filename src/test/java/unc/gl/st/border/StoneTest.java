@@ -21,9 +21,9 @@ public class StoneTest {
     private static void setUp(){
         player1 = new Player("A");
         player2 = new Player("B");
-        stone1 = new Stone(0);
-        stone2 = new Stone(1);
-        stone3 = new Stone(3);
+        stone1 = new Stone(0, null);
+        stone2 = new Stone(1, null);
+        stone3 = new Stone(3, null);
     }
 
     @Test

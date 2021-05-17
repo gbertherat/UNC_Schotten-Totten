@@ -1,8 +1,10 @@
 package unc.gl.st.combination;
 
+import unc.gl.st.card.Card;
 import unc.gl.st.card.ClanCard;
 import unc.gl.st.card.Color;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class CombinationType{
@@ -13,13 +15,9 @@ public class CombinationType{
         RUN,
         SUM
     }
-
-    private boolean supports(List<ClanCard> cards){
-        return false;
-    }
-
-    public Type findFor(Combination combination){
-        List<ClanCard> cards = combination.getCards();
+    
+    public static Type findFor(Combination combination){
+        List<Card> cards = combination.getCards();
 
         if(isColorRun(cards)){
             return Type.COLOR_RUN;
@@ -36,8 +34,9 @@ public class CombinationType{
         return Type.SUM;
     }
 
-    private boolean isColorRun(List<ClanCard> cards){
-        ClanCard ref = cards.get(0);
+    private static boolean isColorRun(List<Card> cards){
+        cards.sort(Comparator.comparingInt(Card::getStrength));
+        Card ref = cards.get(0);
         Color colorRef = ref.getColor();
         int strengthRef = ref.getStrength();
 
@@ -50,7 +49,7 @@ public class CombinationType{
         return true;
     }
 
-    private boolean isThreeOfKind(List<ClanCard> cards){
+    private static boolean isThreeOfKind(List<Card> cards){
         int ref = cards.get(0).getStrength();
 
         for(int i = 1; i < cards.size(); i++){
@@ -61,10 +60,10 @@ public class CombinationType{
         return true;
     }
 
-    private boolean isColor(List<ClanCard> cards){
+    private static boolean isColor(List<Card> cards){
         Color ref = cards.get(0).getColor();
 
-        for(int i = 1; i < cards.size(); i++){
+        for (int i = 1; i < cards.size(); i++){
             if(cards.get(i).getColor() != ref){
                 return false;
             }
@@ -72,7 +71,8 @@ public class CombinationType{
         return true;
     }
 
-    private boolean isRun(List<ClanCard> cards){
+    private static boolean isRun(List<Card> cards){
+        cards.sort(Comparator.comparingInt(Card::getStrength));
         int ref = cards.get(0).getStrength();
 
         for(int i = 1; i < cards.size(); i++){

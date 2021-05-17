@@ -1,36 +1,40 @@
 package unc.gl.st.card;
 
-public class ClanCard {
-    public final int NUM_CARDS_BY_COLOR = 9;
+import com.vaadin.flow.component.html.Image;
+
+public class ClanCard implements Card{
+    public static final int NUM_CARDS_BY_COLOR = 9;
     private int strength;
     private Color color;
+    private Image image;
 
-    public ClanCard(int strength, Color color) throws Exception {
-        if(strength > 0 && strength <= NUM_CARDS_BY_COLOR){
-            this.strength = strength;
-        } else {
-            throw new Exception("Invalid card strength");
-        }
+    public ClanCard(int strength, Color color) {
+        this.strength = strength;
         this.color = color;
+
+        Image cardImage = new Image("/img/cartes_clan/" + this.getId().toLowerCase() + ".png", this.getId());
+        cardImage.setClassName("carte");
+        cardImage.setVisible(false);
+        this.image = cardImage;
     }
 
     public String getId(){
-        return this.color.toString() + String.valueOf(this.strength);
+        return this.color + "-" + String.valueOf(this.strength);
     }
-
+    
     public int getStrength(){
         return this.strength;
-    }
-
-    public void setStrength(int strength){
-        this.strength = strength;
     }
 
     public Color getColor(){
         return this.color;
     }
 
-    public void setColor(Color color){
-        this.color = color;
+    public Image getImage(){
+        return this.image;
+    }
+
+    public void setImage(Image image){
+        this.image = image;
     }
 }

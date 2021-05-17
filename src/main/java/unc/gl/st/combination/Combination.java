@@ -1,50 +1,51 @@
 package unc.gl.st.combination;
 
+import unc.gl.st.card.Card;
 import unc.gl.st.card.ClanCard;
+import unc.gl.st.combination.CombinationType.Type;
 
 import java.util.List;
 
-public class Combination {
-    private List<ClanCard> cards;
+public class Combination implements Comparable<Combination>{
+    private List<Card> cards;
     private int sum;
 
-    public Combination(List<ClanCard> cards){
+    public Combination(List<Card> cards){
         this.cards = cards;
         this.sum = 0;
 
-        for (ClanCard clanCard : this.cards) {
+        for (Card clanCard : this.cards) {
             this.sum += clanCard.getStrength();
         }
     }
 
-    public List<ClanCard> getCards(){
+    public List<Card> getCards(){
         return this.cards;
-    }
-
-    public void setCards(List<ClanCard> cards){
-        this.cards = cards;
     }
 
     public int getSum(){
         return this.sum;
     }
 
-    public void setSum(int sum){
-        this.sum = sum;
-    }
-
     /**
      * This method allows for the comparison between two combinations
-     * @param combination the combination to compare to
-     * @return <p>1 if win <hr> 0 if tie <hr> -1 if lose</p>
+     * @param o the combination to compare to
+     * @return <p>1 if win <hr> 0 if tie <hr> -1 if lose <hr> -2 if an error occured</p> 
      */
-    public int compareTo(Combination combination){
-        if(this.sum > combination.getSum()){
-            return 1;
-        } 
-        else if(this.sum == combination.getSum()){
-            return 0;
+    @Override
+    public int compareTo(Combination o) {
+        if(this.cards.size() != 3 || o.cards.size() != 3){
+            return -2;
         }
-        return -1;
+        Type type1 = CombinationType.findFor(this);
+        Type type2 = CombinationType.findFor(o);
+
+        if(type1.ordinal() > type2.ordinal()){
+            return -1;
+        } else if(type1.ordinal() == type2.ordinal()){
+            return Integer.compare(this.getSum(), o.getSum());
+        } else {
+            return 1;
+        }
     }
 }

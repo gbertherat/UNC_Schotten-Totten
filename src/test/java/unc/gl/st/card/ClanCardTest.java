@@ -9,7 +9,7 @@ public class ClanCardTest {
     private static ClanCard card;
 
     @BeforeAll
-    public static void setUp() throws Exception{
+    public static void setUp() {
         card = new ClanCard(5, Color.BLUE);
     }
 

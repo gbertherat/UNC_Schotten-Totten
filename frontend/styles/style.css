@@ -1,0 +1,70 @@
+.main{
+    padding:0 !important;
+    margin:0 !important;
+    background-color:rgb(236, 236, 236);
+}
+
+.header{
+    width:100%;
+    text-align: center;
+    background-color: lightgray;
+}
+
+.header img{
+    margin:5px;
+}
+
+.button{
+    height:70px;
+    width:500px;
+    margin:50px 0;
+}
+
+.activePlayer{
+    font-size: 1.2vw;
+}
+
+.noGap{
+    margin:0;
+}
+
+.border{
+    width: 10vw;
+    height: auto;
+    cursor:pointer;
+}
+
+.score{
+    font-size: 1vw;
+}
+
+.smallcarte{
+    width:5vw;
+    height:auto;
+}
+
+.carte{
+    width:7vw;
+    height:auto;
+    cursor:pointer;
+}
+
+.outline{
+    outline: solid 4px rgba(0, 255, 0, 0.5);
+}
+
+.winningArea{
+    outline: solid 3px rgba(0, 0, 255, 0.5);
+}
+
+.win{
+    font-size: 2vw;
+}
+
+.footer{
+    color:white;
+    width: 100%;
+    padding:10px 0;
+    text-align: center;
+    background-color: gray;
+}

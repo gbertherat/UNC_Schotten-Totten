@@ -1,7 +1,5 @@
 package unc.gl.st.card;
 
-import com.vaadin.flow.component.html.Image;
-
 public class ClanCard implements Card{
     public static final int NUM_CARDS_BY_COLOR = 9;
     private int strength;

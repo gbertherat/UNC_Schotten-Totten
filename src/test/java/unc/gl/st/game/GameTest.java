@@ -9,14 +9,13 @@ import unc.gl.st.player.Player;
 
 public class GameTest {
     private static Game game;
-    private static Player player;
 
     @BeforeAll
     public static void setUp(){
         GameOptions options = new GameOptions("test");
         GameRegistry registry = GameRegistry.getInstance();
         game = registry.createNewGame(options);
-        player = new Player("test");
+        Player player = new Player("test");
         game.addPlayer(player);
     }
 

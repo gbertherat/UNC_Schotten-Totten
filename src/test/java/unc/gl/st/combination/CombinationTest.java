@@ -17,7 +17,7 @@ public class CombinationTest {
     private static Combination combination3;
 
     @BeforeAll
-    public static void setUp() throws Exception{
+    public static void setUp(){
         ArrayList<Card> cards1 = new ArrayList<>();
         cards1.add(new ClanCard(1, Color.BLUE));
         cards1.add(new ClanCard(5, Color.YELLOW));

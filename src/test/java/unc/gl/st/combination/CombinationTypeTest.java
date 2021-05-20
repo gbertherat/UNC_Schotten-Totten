@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import unc.gl.st.card.Card;
 import unc.gl.st.card.ClanCard;
 import unc.gl.st.card.Color;
-import unc.gl.st.combination.CombinationType.Type;
 
 public class CombinationTypeTest {
     private static Combination colorRun;
@@ -22,6 +21,7 @@ public class CombinationTypeTest {
     @BeforeAll
     public static void setUp(){
         ArrayList<Card> cards = new ArrayList<>();
+
         cards.add(new ClanCard(1, Color.BLUE));
         cards.add(new ClanCard(2, Color.BLUE));
         cards.add(new ClanCard(3, Color.BLUE));
@@ -37,7 +37,7 @@ public class CombinationTypeTest {
         cards = new ArrayList<>();
 
         cards.add(new ClanCard(3, Color.BLUE));
-        cards.add(new ClanCard(1, Color.BLUE));
+        cards.add(new ClanCard(6, Color.BLUE));
         cards.add(new ClanCard(2, Color.BLUE));
         color = new Combination(cards);
 
@@ -50,7 +50,7 @@ public class CombinationTypeTest {
 
         cards = new ArrayList<>();
 
-        cards.add(new ClanCard(3, Color.YELLOW));
+        cards.add(new ClanCard(4, Color.YELLOW));
         cards.add(new ClanCard(1, Color.BLUE));
         cards.add(new ClanCard(2, Color.RED));
         sum = new Combination(cards);
@@ -58,10 +58,10 @@ public class CombinationTypeTest {
 
     @Test
     public void findForTest(){
-        assertEquals(Type.COLOR_RUN, CombinationType.findFor(colorRun));
-        assertEquals(Type.THREE_OF_KIND, CombinationType.findFor(threeOfKind));
-        assertEquals(Type.COLOR, CombinationType.findFor(color));
-        assertEquals(Type.RUN, CombinationType.findFor(run));
-        assertEquals(Type.SUM, CombinationType.findFor(sum));
+        assertEquals(CombinationType.COLOR_RUN, CombinationType.findFor(colorRun));
+        assertEquals(CombinationType.THREE_OF_KIND, CombinationType.findFor(threeOfKind));
+        assertEquals(CombinationType.COLOR, CombinationType.findFor(color));
+        assertEquals(CombinationType.RUN, CombinationType.findFor(run));
+        assertEquals(CombinationType.SUM, CombinationType.findFor(sum));
     }
 }

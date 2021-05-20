@@ -1,26 +1,22 @@
 package unc.gl.st.border;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import unc.gl.st.card.Card;
-import unc.gl.st.card.ClanCard;
 import unc.gl.st.combination.Combination;
 import unc.gl.st.player.Player;
 
 public class Stone {
-    private int id;
-    private Image image;
-    private Map<Player, StoneArea> areas;
+    private final int id;
+    private final Map<Player, StoneArea> areas;
     private Player ownBy;
     private Player firstPlayerToPlace3Cards;
 
-    public Stone(int id, Image image){
+    public Stone(int id){
         this.id = id;
-        this.image = image;
         this.ownBy = null;
         this.areas = new HashMap<>();
         this.firstPlayerToPlace3Cards = null;
@@ -40,14 +36,6 @@ public class Stone {
 
     public void setOwnBy(Player player){
         this.ownBy = player;
-    }
-
-    public Image getImage(){
-        return this.image;
-    }
-
-    public void setImage(Image image){
-        this.image = image;
     }
 
     public StoneArea getAreaFor(Player player){

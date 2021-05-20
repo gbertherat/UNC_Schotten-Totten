@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Stack;
 
 public class Stock {
-    private Stack<Card> cardStack;
+    private final Stack<Card> cardStack;
 
     public Stock(ArrayList<Card> cards) {
         Collections.shuffle(cards);

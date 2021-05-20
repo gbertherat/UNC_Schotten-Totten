@@ -8,7 +8,7 @@ import unc.gl.st.board.Board;
 
 /* SINGLETON CLASS */
 public class GameRegistry {
-    private List<Game> games;
+    private final List<Game> games;
 
     /**
      * Private constructor for class GameRegistry 
@@ -17,7 +17,7 @@ public class GameRegistry {
     private GameRegistry(){
         this.games = new ArrayList<>();
     }
-    private static GameRegistry instance = new GameRegistry();
+    private static final GameRegistry instance = new GameRegistry();
 
     /**
      * Get the unique instance of the class

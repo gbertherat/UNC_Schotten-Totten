@@ -6,9 +6,9 @@ import unc.gl.st.board.Board;
 import unc.gl.st.player.Player;
 
 public class Game {
-    private int id;
+    private final int id;
     private GameOptions options;
-    private Board board;
+    private final Board board;
     private GameStatus status;
     
     /**

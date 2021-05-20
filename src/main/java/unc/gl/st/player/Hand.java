@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Hand {
     public static final int HAND_SIZE = 6;
-    private List<Card> cards;
+    private final List<Card> cards;
 
     public List<Card> getCards(){
         return this.cards;

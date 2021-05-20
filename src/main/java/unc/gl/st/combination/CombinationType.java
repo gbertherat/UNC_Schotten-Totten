@@ -1,13 +1,12 @@
 package unc.gl.st.combination;
 
 import unc.gl.st.card.Card;
-import unc.gl.st.card.ClanCard;
 import unc.gl.st.card.Color;
 
 import java.util.Comparator;
 import java.util.List;
 
-public class CombinationType{
+public class CombinationType {
     public enum Type {
         COLOR_RUN,
         THREE_OF_KIND,

@@ -20,6 +20,8 @@ import unc.gl.st.player.Player;
 import unc.gl.st.stock.Stock;
 import unc.gl.st.stock.StockFactories;
 
+import java.io.File;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -55,8 +57,9 @@ public class GameMenu{
             selectedStone.addCardFor(activePlayer, selectedCard);
             activePlayerHand.removeCard(selectedCard);
 
-            Image image = new Image(selectedCard.getImage().getSrc(), selectedCard.getId());
+            Image image = new Image("/img/cartes_clan/" + selectedCard.getId().toLowerCase() + ".png", selectedCard.getId());
             image.setClassName("smallcarte");
+            image.getElement().setAttribute("added-by", activePlayer.getName());
             image.getElement().setAttribute("style","margin:-3vw;");
             if(players.size() > activePlayer.getId()+1){
                 activePlayer = players.get(activePlayer.getId()+1);
@@ -69,10 +72,8 @@ public class GameMenu{
             if(selectedStone.getOwnBy() != null){
                 for(Iterator<Component> ite = stoneLayout.getChildren().iterator(); ite.hasNext();) {
                     Component item = ite.next();
-                    for(Card card : selectedStone.getAreas().get(selectedStone.getOwnBy()).getCards()){
-                        if(card.getImage().getElement().getAttribute("alt").equals(item.getElement().getAttribute("alt"))){
-                            item.getElement().setAttribute("class","smallcarte winningArea");
-                        }
+                    if(item != null && item.getElement().getAttribute("added-by") != null && item.getElement().getAttribute("added-by").equals(selectedStone.getOwnBy().getName())){
+                        item.getElement().setAttribute("class","smallcarte winningArea");
                     }
                 }
 
@@ -101,16 +102,14 @@ public class GameMenu{
             selectedCard = null;
             selectedStone = null;
 
-            clearOutlines();
-
             return 1;
         }
 
         return 0;
     }
 
-    private static void updateHand(HorizontalLayout cardLayout){
-        cardLayout.removeAll();
+    private static void updateHand(HorizontalLayout handLayout){
+        handLayout.removeAll();
         activePlayerHand = activePlayer.getHand();
 
         int nbCardsToAdd = Hand.HAND_SIZE - activePlayerHand.getCards().size();
@@ -126,28 +125,28 @@ public class GameMenu{
         }
 
         for(Card card : activePlayerHand.getCards()){
-            Image cardImage = card.getImage();
+            Image cardImage = new Image("/img/cartes_clan/" + card.getId().toLowerCase() + ".png", card.getId());
             cardImage.setClassName("carte");
             cardImage.setVisible(false);
 
             cardImage.addClickListener(ev -> {
                 selectedCard = card;
-                clearOutlines();
-                selectedCard.getImage().setClassName("carte outline");
+                clearOutlines(handLayout);
+                cardImage.setClassName("carte outline");
             });
 
-            cardLayout.add(cardImage);
+            handLayout.add(cardImage);
         }
 
         Button showCards = new Button("Montrer les cartes de " + activePlayer.getName());
         showCards.setClassName("button");
         showCards.addClickListener(ev -> {
-            for (int i = 0; i < cardLayout.getComponentCount(); i++) {
-                cardLayout.getComponentAt(i).setVisible(true);
-                cardLayout.remove(showCards);
+            for (int i = 0; i < handLayout.getComponentCount(); i++) {
+                handLayout.getComponentAt(i).setVisible(true);
+                handLayout.remove(showCards);
             }
         });
-        cardLayout.add(showCards);
+        handLayout.add(showCards);
     }
 
     private static void updateScore(HorizontalLayout layout){
@@ -169,9 +168,12 @@ public class GameMenu{
         layout.add(player2Score);
     }
 
-    private static void clearOutlines(){
-        for(Card card : activePlayer.getHand().getCards()){
-            card.getImage().setClassName("carte");
+    private static void clearOutlines(HorizontalLayout handLayout){
+        for(Iterator<Component> ite = handLayout.getChildren().iterator(); ite.hasNext();) {
+            Component item = ite.next();
+            if(item.getElement().getAttribute("class").contains("outline")){
+                item.getElement().setAttribute("class","carte");
+            }
         }
     }
 
@@ -215,6 +217,7 @@ public class GameMenu{
         );
         borderLayout.add(playerSidesLayout);
 
+
         for(Stone stone: border.getStones()) {
             VerticalLayout stoneLayout = new VerticalLayout();
             stoneLayout.setClassName("noGap");
@@ -222,21 +225,33 @@ public class GameMenu{
             stoneLayout.setAlignItems(Alignment.CENTER);
             stoneLayout.setJustifyContentMode(JustifyContentMode.CENTER);
 
-            Image borderCardImage = stone.getImage();
+            URL url = GameMenu.class.getClassLoader().getResource("META-INF/resources/img/tuile_borne");
 
-            borderCardImage.addClickListener(ev -> {
-                selectedStone = stone;
+            File[] files = null;
+            if(url != null) {
+                File dir = new File(url.getFile());
+                files = dir.listFiles();
+            }
 
-                int result = placeCardOnStone(stoneLayout);
-                if(result == 1){
-                    updateHand(handLayout);
-                    updateScore(scoreLayout);
-                } else if(result == 2){
-                    gameWonBy(handLayout, scoreLayout);
-                    game.setStatus(GameStatus.FINISHED);
-                }
-            });
-            stoneLayout.add(borderCardImage);
+            Image borderCardImage;
+            if(files != null) {
+                String borderCardName = files[rand.nextInt(files.length)].getName();
+                borderCardImage = new Image("img/tuile_borne/" + borderCardName, "Carte Frontière");
+                borderCardImage.setClassName("border noGap");
+                borderCardImage.addClickListener(ev -> {
+                    selectedStone = stone;
+
+                    int result = placeCardOnStone(stoneLayout);
+                    if(result == 1){
+                        updateHand(handLayout);
+                        updateScore(scoreLayout);
+                    } else if(result == 2){
+                        gameWonBy(handLayout, scoreLayout);
+                        game.setStatus(GameStatus.FINISHED);
+                    }
+                });
+                stoneLayout.add(borderCardImage);
+            }
             borderLayout.add(stoneLayout);
         }
 

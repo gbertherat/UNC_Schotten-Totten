@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import unc.gl.st.card.Card;
-import unc.gl.st.card.ClanCard;
 
 public class StoneArea {
-    private static int MAX_NUM_CARDS = 3;
-    private List<Card> cards;
+    private static final int MAX_NUM_CARDS = 3;
+    private final List<Card> cards;
 
     public StoneArea(){
         this.cards = new ArrayList<>();

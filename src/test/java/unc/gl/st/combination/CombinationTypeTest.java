@@ -20,7 +20,7 @@ public class CombinationTypeTest {
     private static Combination sum;
 
     @BeforeAll
-    public static void setUp() throws Exception{
+    public static void setUp(){
         ArrayList<Card> cards = new ArrayList<>();
         cards.add(new ClanCard(1, Color.BLUE));
         cards.add(new ClanCard(2, Color.BLUE));

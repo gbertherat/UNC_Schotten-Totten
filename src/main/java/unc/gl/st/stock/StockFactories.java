@@ -18,9 +18,6 @@ public class StockFactories {
                         IntStream.rangeClosed(1, ClanCard.NUM_CARDS_BY_COLOR)
                                 .forEach(num -> cards.add(new ClanCard(num, color)))
                 );
-        for(Card card : cards){
-            System.out.println(card.getId());
-        }
         return new Stock(cards);
     }
 

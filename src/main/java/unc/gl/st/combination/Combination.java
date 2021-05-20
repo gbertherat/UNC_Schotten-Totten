@@ -7,7 +7,7 @@ import unc.gl.st.combination.CombinationType.Type;
 import java.util.List;
 
 public class Combination implements Comparable<Combination>{
-    private List<Card> cards;
+    private final List<Card> cards;
     private int sum;
 
     public Combination(List<Card> cards){

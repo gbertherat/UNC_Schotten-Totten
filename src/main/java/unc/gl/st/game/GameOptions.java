@@ -3,7 +3,7 @@ package unc.gl.st.game;
 import java.time.Instant;
 
 public class GameOptions {
-    private Instant created;
+    private final Instant created;
     private String name;
 
     /**

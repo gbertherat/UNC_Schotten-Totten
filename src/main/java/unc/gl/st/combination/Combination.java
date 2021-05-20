@@ -1,7 +1,6 @@
 package unc.gl.st.combination;
 
 import unc.gl.st.card.Card;
-import unc.gl.st.card.ClanCard;
 import unc.gl.st.combination.CombinationType.Type;
 
 import java.util.List;

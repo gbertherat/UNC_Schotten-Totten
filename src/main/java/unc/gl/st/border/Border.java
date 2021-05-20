@@ -1,11 +1,7 @@
 package unc.gl.st.border;
 
-import com.vaadin.flow.component.html.Image;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Border {
     private static final int NUM_STONES = 9;

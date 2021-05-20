@@ -17,9 +17,11 @@ public class GameRegistryTest {
         for(int i = 0; i < 5; i++){
             registry.createNewGame(options);
         }
-        registry.findGame(3)
-                .get()
-                .setStatus(GameStatus.STARTED);
+        if(registry.findGame(3).isPresent()) {
+            registry.findGame(3)
+                    .get()
+                    .setStatus(GameStatus.STARTED);
+        }
     }
 
     @Test

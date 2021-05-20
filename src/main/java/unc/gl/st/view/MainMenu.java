@@ -14,9 +14,7 @@ public class MainMenu{
         body.setJustifyContentMode(JustifyContentMode.CENTER);
         Button jouer = new Button("JOUER"); // Bouton JOUER
         jouer.setClassName("button");
-        jouer.addClickListener(ev -> {
-            mainLayout.replace(body, PlayerMenu.build(mainLayout));
-        });
+        jouer.addClickListener(ev -> mainLayout.replace(body, PlayerMenu.build(mainLayout)));
 
         body.add(jouer);
 

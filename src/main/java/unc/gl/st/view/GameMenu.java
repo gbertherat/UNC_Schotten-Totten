@@ -121,16 +121,10 @@ public class GameMenu{
         handLayout.removeAll();
         activePlayerHand = activePlayer.getHand();
 
-        int nbCardsToAdd = Hand.HAND_SIZE - activePlayerHand.getCards().size();
-        for(int i = 0; i < nbCardsToAdd; i++) {
-            try {
-                Card randCard = stock.draw();
-                activePlayerHand.addCard(randCard);
-            } catch (FullHandException e)  {
-                e.printStackTrace();
-            } catch (EmptyStockException e) {
-                System.out.println("La pioche est vide!");
-            }
+        try {
+            activePlayerHand.refillHand(stock);
+        } catch (EmptyStockException e) {
+            System.out.println("La pioche est vide!");
         }
 
         for(Card card : activePlayerHand.getCards()){
@@ -139,6 +133,7 @@ public class GameMenu{
             cardImage.setVisible(false);
 
             cardImage.addClickListener(ev -> {
+
                 selectedCard = card;
                 clearOutlines(handLayout);
                 cardImage.setClassName("carte outline");
@@ -178,12 +173,10 @@ public class GameMenu{
     }
 
     private static void clearOutlines(HorizontalLayout handLayout){
-        for(Iterator<Component> ite = handLayout.getChildren().iterator(); ite.hasNext();) {
-            Component item = ite.next();
-            if(item.getElement().getAttribute("class").contains("outline")){
-                item.getElement().setAttribute("class","carte");
-            }
-        }
+        handLayout.getChildren()
+                .map(Component::getElement)
+                .filter(element -> element.getAttribute("class").contains("outline"))
+                .forEach(element -> element.setAttribute("class","carte"));
     }
 
     private static List<String> getStoneImageNames(){

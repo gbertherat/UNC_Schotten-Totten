@@ -40,6 +40,8 @@ public class GameMenu{
 
     private static Border border = null;
 
+    private static Game game = null;
+
     private static Card selectedCard = null;
     private static Stone selectedStone = null;
     private static final Stock stock = StockFactories.createClanStock();
@@ -56,60 +58,63 @@ public class GameMenu{
         }
     }
 
-    private static int placeCardOnStone(VerticalLayout stoneLayout){
-        if(selectedCard != null && selectedStone != null && !selectedStone.isFullFor(activePlayer)){
-            selectedStone.addCardFor(activePlayer, selectedCard);
-            activePlayerHand.removeCard(selectedCard);
+    private static int placeCardOnStone(VerticalLayout stoneLayout) {
+        if (selectedCard == null || selectedStone == null || selectedStone.isFullFor(activePlayer)) {
+            return 0;
+        }
 
-            Image image = new Image("/img/cartes_clan/" + selectedCard.getId().toLowerCase() + ".png", selectedCard.getId());
-            image.setClassName("smallcarte");
-            image.getElement().setAttribute("added-by", activePlayer.getName());
-            image.getElement().setAttribute("style","margin:-3vw;");
-            if(activePlayer.getId()+1 < players.size()){
-                activePlayer = players.get(activePlayer.getId()+1);
-                stoneLayout.addComponentAsFirst(image);
-            } else {
-                activePlayer = players.get(0);
-                stoneLayout.add(image);
-            }
+        selectedStone.addCardFor(activePlayer, selectedCard);
+        activePlayerHand.removeCard(selectedCard);
 
-            if(selectedStone.getOwnBy() != null){
-                for(Iterator<Component> ite = stoneLayout.getChildren().iterator(); ite.hasNext();) {
-                    Component item = ite.next();
-                    if(item != null && item.getElement().getAttribute("added-by") != null && item.getElement().getAttribute("added-by").equals(selectedStone.getOwnBy().getName())){
-                        item.getElement().setAttribute("class","smallcarte winningArea");
-                    }
-                }
+        Image image = new Image("/img/cartes_clan/" + selectedCard.getId().toLowerCase() + ".png", selectedCard.getId());
+        image.setClassName("smallcarte");
+        image.getElement().setAttribute("added-by", activePlayer.getName());
+        image.getElement().setAttribute("style", "margin:-3vw;");
 
-                Player ownByPlayer = selectedStone.getOwnBy();
-                ownByPlayer.setScore(ownByPlayer.getScore()+1);
+        if (activePlayer.getId() == 0) {
+            stoneLayout.addComponentAsFirst(image);
+        } else {
+            stoneLayout.add(image);
+        }
+        activePlayer = game.getBoard().getOpponentPlayer(activePlayer);
 
-                int i = 1;
-                int nbAdjacentOwned = 1;
-                while(selectedStone.getId()+i <= border.getNumStones()-1 && border.getStones().get(selectedStone.getId()+i).getOwnBy() == ownByPlayer
-                        || selectedStone.getId()-i >= 0 && border.getStones().get(selectedStone.getId()-i).getOwnBy() == ownByPlayer){
-                    if(selectedStone.getId()+i <= border.getNumStones()-1 && border.getStones().get(selectedStone.getId()+i).getOwnBy() == ownByPlayer
-                            && selectedStone.getId()-i >= 0 && border.getStones().get(selectedStone.getId()-i).getOwnBy() == ownByPlayer){
-                        nbAdjacentOwned += 2;
-                    } else {
-                        nbAdjacentOwned++;
-                    }
-                    i++;
-                }
-
-                if(nbAdjacentOwned >= 3 || ownByPlayer.getScore() >= 5){
-                    winningPlayer = ownByPlayer;
-                    return 2;
-                }
-            }
-
+        final Player stoneOwner = selectedStone.getOwnBy();
+        if (stoneOwner == null) {
             selectedCard = null;
             selectedStone = null;
-
             return 1;
         }
 
-        return 0;
+        stoneLayout.getChildren()
+                .map(Component::getElement)
+                .filter(stoneChildElement -> stoneOwner.getName().equals(stoneChildElement.getAttribute("added-by")))
+                .forEach(ownerCardElement -> ownerCardElement.setAttribute("class", "smallcarte winningArea"));
+
+
+        stoneOwner.setScore(stoneOwner.getScore() + 1);
+
+        int i = 0;
+        int nbAdjacentOwned = border.getNbrAdjacentStones(stoneOwner);
+
+//        while(selectedStone.getId()+i <= border.getNumStones()-1 && border.getStones().get(selectedStone.getId()+i).getOwnBy() == stoneOwner
+//                || selectedStone.getId()-i >= 0 && border.getStones().get(selectedStone.getId()-i).getOwnBy() == stoneOwner){
+//            if(selectedStone.getId()+i <= border.getNumStones()-1 && border.getStones().get(selectedStone.getId()+i).getOwnBy() == stoneOwner
+//                    && selectedStone.getId()-i >= 0 && border.getStones().get(selectedStone.getId()-i).getOwnBy() == stoneOwner){
+//                nbAdjacentOwned += 2;
+//            } else {
+//                nbAdjacentOwned++;
+//            }
+//            i++;
+//        }
+
+        if (nbAdjacentOwned >= 3 || stoneOwner.getScore() >= 5) {
+            winningPlayer = stoneOwner;
+            return 2;
+        } else {
+            selectedCard = null;
+            selectedStone = null;
+            return 1;
+        }
     }
 
     private static void updateHand(HorizontalLayout handLayout){
@@ -200,6 +205,7 @@ public class GameMenu{
     }
 
     public static VerticalLayout build(Game game) {
+        GameMenu.game = game;
         /* LAYOUTS */
         VerticalLayout gameLayout = new VerticalLayout();
         gameLayout.setSizeFull();
@@ -223,10 +229,6 @@ public class GameMenu{
 
         /* PLAYER */
         players = game.getPlayers();
-//        players.forEach(player -> {System.out.println(player);});
-//        for(int i = 0; i < players.size(); i++){
-//            players.get(i).setId(i);
-//        }
         activePlayer = players.get(rand.nextInt(players.size()));
 
         /* BORDER */

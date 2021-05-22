@@ -16,10 +16,10 @@ public class Game {
      * @param id : the id of the game
      * @param options : the options of the game
      */
-    public Game(int id, Board board, GameOptions options){
+    public Game(int id, GameOptions options){
         this.id = id;
         this.options = options;
-        this.board = board;
+        this.board = new Board();
         this.status = GameStatus.CREATED;
     }
 

@@ -21,10 +21,14 @@ import unc.gl.st.stock.Stock;
 import unc.gl.st.stock.StockFactories;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class GameMenu{
     private static List<Player> players = null;
@@ -61,7 +65,7 @@ public class GameMenu{
             image.setClassName("smallcarte");
             image.getElement().setAttribute("added-by", activePlayer.getName());
             image.getElement().setAttribute("style","margin:-3vw;");
-            if(players.size() > activePlayer.getId()+1){
+            if(activePlayer.getId()+1 < players.size()){
                 activePlayer = players.get(activePlayer.getId()+1);
                 stoneLayout.addComponentAsFirst(image);
             } else {
@@ -177,6 +181,24 @@ public class GameMenu{
         }
     }
 
+    private static List<String> getStoneImageNames(){
+        URL url = GameMenu.class.getClassLoader().getResource("META-INF/resources/img/tuile_borne");
+
+        File[] files = null;
+        if(url != null) {
+            File dir;
+            try {
+                dir = new File(URLDecoder.decode(url.getFile(), "UTF-8"));
+                files = dir.listFiles();
+            } catch (UnsupportedEncodingException e) {
+                System.out.println("Could not load files because of encoding exception");
+                e.printStackTrace();
+            }
+        }
+
+        return Arrays.stream(files).map(File::getName).collect(Collectors.toList());
+    }
+
     public static VerticalLayout build(Game game) {
         /* LAYOUTS */
         VerticalLayout gameLayout = new VerticalLayout();
@@ -190,6 +212,7 @@ public class GameMenu{
 
         HorizontalLayout borderLayout = new HorizontalLayout();
 
+
         HorizontalLayout handLayout = new HorizontalLayout();
 
         HorizontalLayout scoreLayout = new HorizontalLayout();
@@ -200,13 +223,14 @@ public class GameMenu{
 
         /* PLAYER */
         players = game.getPlayers();
-        for(int i = 0; i < players.size(); i++){
-            players.get(i).setId(i);
-        }
+//        players.forEach(player -> {System.out.println(player);});
+//        for(int i = 0; i < players.size(); i++){
+//            players.get(i).setId(i);
+//        }
         activePlayer = players.get(rand.nextInt(players.size()));
 
         /* BORDER */
-        border = new Border();
+        border = game.getBoard().getBorder();
         VerticalLayout playerSidesLayout = new VerticalLayout();
         playerSidesLayout.setSizeFull();
         playerSidesLayout.setJustifyContentMode(JustifyContentMode.CENTER);
@@ -217,6 +241,7 @@ public class GameMenu{
         );
         borderLayout.add(playerSidesLayout);
 
+        List<String> stoneImageNames = getStoneImageNames();
 
         for(Stone stone: border.getStones()) {
             VerticalLayout stoneLayout = new VerticalLayout();
@@ -225,33 +250,24 @@ public class GameMenu{
             stoneLayout.setAlignItems(Alignment.CENTER);
             stoneLayout.setJustifyContentMode(JustifyContentMode.CENTER);
 
-            URL url = GameMenu.class.getClassLoader().getResource("META-INF/resources/img/tuile_borne");
+            String stoneImageName = stoneImageNames.get(rand.nextInt(stoneImageNames.size()));
+            Image stoneImage;
+            stoneImage = new Image("img/tuile_borne/" + stoneImageName, "Carte Frontière");
+            stoneImage.setClassName("border noGap");
+            stoneImage.addClickListener(ev -> {
+                selectedStone = stone;
 
-            File[] files = null;
-            if(url != null) {
-                File dir = new File(url.getFile());
-                files = dir.listFiles();
-            }
+                int result = placeCardOnStone(stoneLayout);
+                if(result == 1){
+                    updateHand(handLayout);
+                    updateScore(scoreLayout);
+                } else if(result == 2){
+                    gameWonBy(handLayout, scoreLayout);
+                    game.setStatus(GameStatus.FINISHED);
+                }
+            });
+            stoneLayout.add(stoneImage);
 
-            Image borderCardImage;
-            if(files != null) {
-                String borderCardName = files[rand.nextInt(files.length)].getName();
-                borderCardImage = new Image("img/tuile_borne/" + borderCardName, "Carte Frontière");
-                borderCardImage.setClassName("border noGap");
-                borderCardImage.addClickListener(ev -> {
-                    selectedStone = stone;
-
-                    int result = placeCardOnStone(stoneLayout);
-                    if(result == 1){
-                        updateHand(handLayout);
-                        updateScore(scoreLayout);
-                    } else if(result == 2){
-                        gameWonBy(handLayout, scoreLayout);
-                        game.setStatus(GameStatus.FINISHED);
-                    }
-                });
-                stoneLayout.add(borderCardImage);
-            }
             borderLayout.add(stoneLayout);
         }
 

@@ -21,7 +21,11 @@ import unc.gl.st.stock.Stock;
 import unc.gl.st.stock.StockFactories;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -229,9 +233,17 @@ public class GameMenu{
 
             File[] files = null;
             if(url != null) {
-                File dir = new File(url.getFile());
-                files = dir.listFiles();
+                File dir;
+
+                try {
+                    dir = new File(URLDecoder.decode(url.getFile(), "UTF-8"));
+                    files = dir.listFiles();
+                } catch (UnsupportedEncodingException e) {
+                    System.out.println("Could not load files because of encoding exception");
+                    e.printStackTrace();
+                }
             }
+
 
             Image borderCardImage;
             if(files != null) {

@@ -28,6 +28,7 @@ public class Board {
 
     public void addPlayer(Player player) {
         if (!isFull()) {
+            player.setId(players.size());
             players.add(player);
         }
     }

@@ -10,14 +10,14 @@ import com.vaadin.flow.router.Route;
 @Route("/")
 @Tag("st-main")
 @CssImport("./styles/style.css")
-public class view extends HtmlContainer{
+public class View extends HtmlContainer{
 
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
-    public view(){
+    public View(){
         VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setClassName("main");
         mainLayout.setAlignItems(Alignment.CENTER);

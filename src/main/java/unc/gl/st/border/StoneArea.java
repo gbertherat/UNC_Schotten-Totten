@@ -1,6 +1,7 @@
 package unc.gl.st.border;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import unc.gl.st.card.Card;
@@ -19,6 +20,7 @@ public class StoneArea {
     
     public void addCard(Card card){
         this.cards.add(card);
+        cards.sort(Comparator.comparingInt(Card::getStrength));
     }
 
     public List<Card> getCards(){

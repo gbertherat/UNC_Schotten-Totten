@@ -10,16 +10,17 @@ public class Game {
     private GameOptions options;
     private final Board board;
     private GameStatus status;
+    private GameHandler gameHandler;
     
     /**
      * Constructor for class Game
      * @param id : the id of the game
      * @param options : the options of the game
      */
-    public Game(int id, Board board, GameOptions options){
+    public Game(int id, GameOptions options){
         this.id = id;
         this.options = options;
-        this.board = board;
+        this.board = new Board();
         this.status = GameStatus.CREATED;
     }
 
@@ -71,12 +72,17 @@ public class Game {
         this.status = status;
     }
 
+    public GameHandler getGameHandler() {
+        return gameHandler;
+    }
+
     /**
      * Allows the start of a game
      */
     public void start(){
         if(this.status == GameStatus.CREATED){
             this.status = GameStatus.STARTED;
+            this.gameHandler = new GameHandler(this);
         }
     }
 

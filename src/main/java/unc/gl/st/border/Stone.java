@@ -1,8 +1,6 @@
 package unc.gl.st.border;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import unc.gl.st.card.Card;
@@ -65,15 +63,7 @@ public class Stone {
             firstPlayerToPlace3Cards = player;
         }
 
-        if(areas.size() > 1) {
-            List<Player> players = new ArrayList<>(areas.keySet());
-            Player player1 = players.get(0);
-            Player player2 = players.get(1);
-
-            if (isFullFor(player1) && isFullFor(player2)) {
-                fightForStone();
-            }
-        }
+        fightForStone();
     }
 
     public void fightForStone(){
@@ -92,7 +82,7 @@ public class Stone {
 
             int result = combination1.compareTo(combination2);
 
-            if(result < 0){
+            if(result == -1){
                 this.setOwnBy(player2);
             } else if(result == 0){
                 this.setOwnBy(this.firstPlayerToPlace3Cards);

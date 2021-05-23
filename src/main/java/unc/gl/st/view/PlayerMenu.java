@@ -30,8 +30,9 @@ public class PlayerMenu {
         playerTwoName.setPrefixComponent(new Icon(VaadinIcon.USER));
         formLayout.add(playerTwoName);
 
-        Button valider = new Button("Valider");
+        Button valider = new Button("Valider", new Icon(VaadinIcon.CHECK));
         valider.setId("submitButton");
+        valider.setClassName("pointer");
 
         valider.addClickListener(ev -> {
             if(playerOneName.getValue().length() == 0 || playerOneName.getValue().length() > 10){

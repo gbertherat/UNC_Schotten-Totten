@@ -23,14 +23,6 @@ public class Stock {
         return cardStack.pop();
     }
 
-    public Stack<Card> getCards(){
-        return this.cardStack;
-    }
-
-    public void removeTopCard(){
-        this.cardStack.pop();
-    }
-
     public boolean isEmpty(){
         return this.cardStack.empty();
     }

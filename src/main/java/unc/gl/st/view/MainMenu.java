@@ -37,7 +37,7 @@ public class MainMenu {
         download.removeAll();
         download.setClassName("noPointer");
 
-        Button downloadButton = new Button("COMMENT JOUER?", new Icon(VaadinIcon.DOWNLOAD_ALT)); // Bouton COMMENT JOUER
+        Button downloadButton = new Button("COMMENT JOUER?", new Icon(VaadinIcon.DOWNLOAD)); // Bouton COMMENT JOUER
         downloadButton.setClassName("button pointer");
 
         download.add(downloadButton);

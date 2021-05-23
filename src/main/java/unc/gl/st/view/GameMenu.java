@@ -12,6 +12,7 @@ import unc.gl.st.border.Stone;
 import unc.gl.st.card.Card;
 import unc.gl.st.exception.EmptyStockException;
 import unc.gl.st.game.Game;
+import unc.gl.st.game.GameHandler;
 import unc.gl.st.game.GameStatus;
 import unc.gl.st.player.Hand;
 import unc.gl.st.player.Player;
@@ -34,6 +35,7 @@ public class GameMenu {
     private static Border border = null;
 
     private static Game game = null;
+    private static GameHandler gameHandler;
 
     private static Card selectedCard = null;
     private static Stone selectedStone = null;
@@ -51,60 +53,38 @@ public class GameMenu {
         }
     }
 
-    private static int placeCardOnStone(VerticalLayout stoneLayout) {
-        if (selectedCard == null || selectedStone == null || selectedStone.isFullFor(activePlayer)) {
-            return 0;
+    private static GameHandler.ResponseCode placeCardOnStone(VerticalLayout stoneLayout) {
+
+        GameHandler.ResponseCode responseCode = gameHandler.placeCardOnStone(activePlayer, selectedCard, selectedStone );
+
+        switch (responseCode){
+            case NO_ACTION:
+                break;
+            case OK:
+                ClanCardImage clanCardImage = new ClanCardImage(selectedCard, true, activePlayer);
+                if (activePlayer.getId() == 0) {
+                    stoneLayout.addComponentAsFirst(clanCardImage);
+                } else {
+                    stoneLayout.add(clanCardImage);
+                }
+                activePlayer = game.getBoard().getOpponentPlayer(activePlayer);
+
+                final Player stoneOwner = selectedStone.getOwnBy();
+
+                if (stoneOwner != null){
+                    stoneLayout.getChildren()
+                            .map(Component::getElement)
+                            .filter(stoneChildElement -> stoneOwner.getName().equals(stoneChildElement.getAttribute("added-by")))
+                            .forEach(ownerCardElement -> ownerCardElement.setAttribute("class", "smallcarte winningArea"));
+                }
+
+                selectedCard = null;
+                selectedStone = null;
+                break;
+            case GAME_FINISHED:
+                winningPlayer = selectedStone.getOwnBy();
         }
-
-        selectedStone.addCardFor(activePlayer, selectedCard);
-        activePlayerHand.removeCard(selectedCard);
-
-        ClanCardImage clanCardImage = new ClanCardImage(selectedCard, true, activePlayer);
-
-        if (activePlayer.getId() == 0) {
-            stoneLayout.addComponentAsFirst(clanCardImage);
-        } else {
-            stoneLayout.add(clanCardImage);
-        }
-        activePlayer = game.getBoard().getOpponentPlayer(activePlayer);
-
-        final Player stoneOwner = selectedStone.getOwnBy();
-        if (stoneOwner == null) {
-            selectedCard = null;
-            selectedStone = null;
-            return 1;
-        }
-
-        stoneLayout.getChildren()
-                .map(Component::getElement)
-                .filter(stoneChildElement -> stoneOwner.getName().equals(stoneChildElement.getAttribute("added-by")))
-                .forEach(ownerCardElement -> ownerCardElement.setAttribute("class", "smallcarte winningArea"));
-
-
-        stoneOwner.setScore(stoneOwner.getScore() + 1);
-
-        int i = 0;
-        int nbAdjacentOwned = border.getNbrAdjacentStones(stoneOwner);
-
-//        while(selectedStone.getId()+i <= border.getNumStones()-1 && border.getStones().get(selectedStone.getId()+i).getOwnBy() == stoneOwner
-//                || selectedStone.getId()-i >= 0 && border.getStones().get(selectedStone.getId()-i).getOwnBy() == stoneOwner){
-//            if(selectedStone.getId()+i <= border.getNumStones()-1 && border.getStones().get(selectedStone.getId()+i).getOwnBy() == stoneOwner
-//                    && selectedStone.getId()-i >= 0 && border.getStones().get(selectedStone.getId()-i).getOwnBy() == stoneOwner){
-//                nbAdjacentOwned += 2;
-//            } else {
-//                nbAdjacentOwned++;
-//            }
-//            i++;
-//        }
-
-        if (nbAdjacentOwned >= 3 || stoneOwner.getScore() >= 5) {
-            winningPlayer = stoneOwner;
-            return 2;
-        } else {
-            selectedCard = null;
-            selectedStone = null;
-            return 1;
-        }
+        return responseCode;
     }
 
     private static void updateHand(HorizontalLayout handLayout) {
@@ -169,6 +149,7 @@ public class GameMenu {
 
     public static VerticalLayout build(Game game) {
         GameMenu.game = game;
+        GameMenu.gameHandler = new GameHandler(game);
         /* LAYOUTS */
         VerticalLayout gameLayout = new VerticalLayout();
         gameLayout.setSizeFull();
@@ -218,13 +199,15 @@ public class GameMenu {
             stoneImage.addClickListener(ev -> {
                 selectedStone = stone;
 
-                int result = placeCardOnStone(stoneLayout);
-                if (result == 1) {
-                    updateHand(handLayout);
-                    updateScore(scoreLayout);
-                } else if (result == 2) {
-                    gameWonBy(handLayout, scoreLayout);
-                    game.setStatus(GameStatus.FINISHED);
+                GameHandler.ResponseCode responseCode = placeCardOnStone(stoneLayout);
+                switch (responseCode) {
+                    case OK:
+                        updateHand(handLayout);
+                        updateScore(scoreLayout);
+                        break;
+                    case GAME_FINISHED:
+                        gameWonBy(handLayout, scoreLayout);
+                        game.setStatus(GameStatus.FINISHED);
                 }
             });
             stoneLayout.add(stoneImage);

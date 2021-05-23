@@ -39,5 +39,16 @@ public class Border {
             }
         }
         return nbAdjacentOwned;
+
+        //        while(selectedStone.getId()+i <= border.getNumStones()-1 && border.getStones().get(selectedStone.getId()+i).getOwnBy() == stoneOwner
+//                || selectedStone.getId()-i >= 0 && border.getStones().get(selectedStone.getId()-i).getOwnBy() == stoneOwner){
+//            if(selectedStone.getId()+i <= border.getNumStones()-1 && border.getStones().get(selectedStone.getId()+i).getOwnBy() == stoneOwner
+//                    && selectedStone.getId()-i >= 0 && border.getStones().get(selectedStone.getId()-i).getOwnBy() == stoneOwner){
+//                nbAdjacentOwned += 2;
+//            } else {
+//                nbAdjacentOwned++;
+//            }
+//            i++;
+//        }
     }
 }

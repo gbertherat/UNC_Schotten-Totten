@@ -4,6 +4,8 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -138,8 +140,8 @@ public class GameMenu{
             handLayout.add(cardImage);
         }
 
-        Button showCards = new Button("Montrer les cartes de " + activePlayer.getName());
-        showCards.setClassName("button");
+        Button showCards = new Button("Montrer les cartes de " + activePlayer.getName(), new Icon(VaadinIcon.CHEVRON_DOWN));
+        showCards.setClassName("button pointer");
         showCards.addClickListener(ev -> {
             for (int i = 0; i < handLayout.getComponentCount(); i++) {
                 handLayout.getComponentAt(i).setVisible(true);

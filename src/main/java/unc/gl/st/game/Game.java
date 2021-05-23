@@ -10,6 +10,7 @@ public class Game {
     private GameOptions options;
     private final Board board;
     private GameStatus status;
+    private GameHandler gameHandler;
     
     /**
      * Constructor for class Game
@@ -71,12 +72,17 @@ public class Game {
         this.status = status;
     }
 
+    public GameHandler getGameHandler() {
+        return gameHandler;
+    }
+
     /**
      * Allows the start of a game
      */
     public void start(){
         if(this.status == GameStatus.CREATED){
             this.status = GameStatus.STARTED;
+            this.gameHandler = new GameHandler(this);
         }
     }
 

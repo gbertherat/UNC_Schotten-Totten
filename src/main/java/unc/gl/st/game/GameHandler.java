@@ -46,10 +46,6 @@ public class GameHandler {
         return winner;
     }
 
-    public Stock getStock() {
-        return stock;
-    }
-
     public ResponseCode placeCardOnStone(Card card, Stone stone) {
         if (card == null || stone == null || stone.isFullFor(activePlayer)) {
             return ResponseCode.NO_ACTION;
@@ -70,6 +66,7 @@ public class GameHandler {
 
         if (nbAdjacentOwned >= 3 || stoneOwner.getScore() >= 5) {
             winner = stoneOwner;
+            game.setStatus(GameStatus.FINISHED);
             return ResponseCode.GAME_FINISHED;
         } else {
             activePlayer = game.getBoard().getOpponentPlayer(activePlayer);

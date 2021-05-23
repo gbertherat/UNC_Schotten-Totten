@@ -31,4 +31,8 @@ public class ClanCardImage extends Image {
     public void removeAddedBy(){
         this.getElement().removeAttribute("added-by");
     }
+
+    public void setWinningArea(){
+        this.addClassName("winningArea");
+    }
 }

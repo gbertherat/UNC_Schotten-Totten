@@ -22,79 +22,66 @@ import unc.gl.st.view.component.ClanCardImage;
 import unc.gl.st.view.component.StoneImage;
 
 import java.util.List;
-import java.util.Random;
 
 public class GameMenu {
-    private static List<Player> players = null;
-
-    private static Player activePlayer = null;
-    private static Hand activePlayerHand = null;
-
-    private static Player winningPlayer = null;
-
-    private static Border border = null;
 
     private static Game game = null;
     private static GameHandler gameHandler;
 
     private static Card selectedCard = null;
     private static Stone selectedStone = null;
-    private static final Stock stock = StockFactories.createClanStock();
 
     private static void gameWonBy(HorizontalLayout handLayout, HorizontalLayout scoreLayout) {
-        if (winningPlayer != null) {
-            System.out.println(winningPlayer.getName() + " a gagné la partie!");
+        Player winner = gameHandler.getWinner();
+        if (winner != null) {
+            System.out.println(winner.getName() + " a gagné la partie!");
             handLayout.removeAll();
             scoreLayout.removeAll();
 
-            Label winningLabel = new Label(winningPlayer.getName() + " a gagné la partie!");
+            Label winningLabel = new Label(winner.getName() + " a gagné la partie!");
             winningLabel.setClassName("win");
             scoreLayout.add(winningLabel);
         }
     }
 
     private static GameHandler.ResponseCode placeCardOnStone(VerticalLayout stoneLayout) {
+        final Player actingPlayer = gameHandler.getActivePlayer();
+        GameHandler.ResponseCode responseCode = gameHandler.placeCardOnStone(selectedCard, selectedStone);
 
-        GameHandler.ResponseCode responseCode = gameHandler.placeCardOnStone(activePlayer, selectedCard, selectedStone );
-
-        switch (responseCode){
-            case NO_ACTION:
-                break;
-            case OK:
-                ClanCardImage clanCardImage = new ClanCardImage(selectedCard, true, activePlayer);
-                if (activePlayer.getId() == 0) {
-                    stoneLayout.addComponentAsFirst(clanCardImage);
-                } else {
-                    stoneLayout.add(clanCardImage);
-                }
-                activePlayer = game.getBoard().getOpponentPlayer(activePlayer);
-
-                final Player stoneOwner = selectedStone.getOwnBy();
-
-                if (stoneOwner != null){
-                    stoneLayout.getChildren()
-                            .map(Component::getElement)
-                            .filter(stoneChildElement -> stoneOwner.getName().equals(stoneChildElement.getAttribute("added-by")))
-                            .forEach(ownerCardElement -> ownerCardElement.setAttribute("class", "smallcarte winningArea"));
-                }
-
-                selectedCard = null;
-                selectedStone = null;
-                break;
-            case GAME_FINISHED:
-                winningPlayer = selectedStone.getOwnBy();
+        if (responseCode == GameHandler.ResponseCode.NO_ACTION){
+            return responseCode;
         }
+
+        final ClanCardImage clanCardImage = new ClanCardImage(selectedCard, true, actingPlayer);
+        if (actingPlayer.getId() == 0) {
+            stoneLayout.addComponentAsFirst(clanCardImage);
+        } else {
+            stoneLayout.add(clanCardImage);
+        }
+
+        final Player stoneOwner = selectedStone.getOwnBy();
+        if (stoneOwner != null) {
+            stoneLayout.getChildren()
+                    .map(Component::getElement)
+                    .filter(stoneChildElement -> stoneOwner.getName().equals(stoneChildElement.getAttribute("added-by")))
+                    .forEach(ownerCardElement -> ownerCardElement.setAttribute("class", "smallcarte winningArea"));
+        }
+
+        selectedCard = null;
+        selectedStone = null;
+
+
         return responseCode;
     }
 
     private static void updateHand(HorizontalLayout handLayout) {
         handLayout.removeAll();
-        activePlayerHand = activePlayer.getHand();
+        final Player activePlayer = gameHandler.getActivePlayer();
+        final Hand activePlayerHand = activePlayer.getHand();
 
-        try {
-            activePlayerHand.refillHand(stock);
-        } catch (EmptyStockException e) {
-            System.out.println("La pioche est vide!");
+        GameHandler.ResponseCode responseCode = gameHandler.updateHand();
+        if (responseCode == GameHandler.ResponseCode.NO_ACTION){
+            return;
         }
 
         for (Card card : activePlayerHand.getCards()) {
@@ -126,6 +113,7 @@ public class GameMenu {
         Label scores = new Label("Scores:");
         scores.setClassName("score");
 
+        List<Player> players = gameHandler.getGame().getPlayers();
         Player player1 = players.get(0);
         Label player1Score = new Label(player1.getName() + ": " + player1.getScore());
         player1Score.setClassName("score");
@@ -149,7 +137,7 @@ public class GameMenu {
 
     public static VerticalLayout build(Game game) {
         GameMenu.game = game;
-        GameMenu.gameHandler = new GameHandler(game);
+        gameHandler = new GameHandler(game);
         /* LAYOUTS */
         VerticalLayout gameLayout = new VerticalLayout();
         gameLayout.setSizeFull();
@@ -167,16 +155,13 @@ public class GameMenu {
 
         HorizontalLayout scoreLayout = new HorizontalLayout();
 
-        Random rand = new Random();
-
         game.start();
 
         /* PLAYER */
-        players = game.getPlayers();
-        activePlayer = players.get(rand.nextInt(players.size()));
+        List<Player> players = gameHandler.getGame().getPlayers();
 
         /* BORDER */
-        border = game.getBoard().getBorder();
+        Border border = game.getBoard().getBorder();
         VerticalLayout playerSidesLayout = new VerticalLayout();
         playerSidesLayout.setSizeFull();
         playerSidesLayout.setJustifyContentMode(JustifyContentMode.CENTER);

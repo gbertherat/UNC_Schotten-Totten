@@ -3,10 +3,12 @@ Lancez-vous dans une lutte où tous les coups sont permis pour  gagner  le  cont
 Envoyez les membres de votre tribu défendre les bornes et déployez vos forces en réalisant les meilleures combinaisons de cartes. <br>
 Pour gagner, soyez le premier à contrôler cinq Bornes dispersées le long de la frontière ou trois Bornes adjacentes. <br>
 
+Ce projet a été développé sous Java 8 avec les frameworks Spring BOOT et Vaadin 18.
+
 # Lancer le projet
 Télécharger le code source dans l'onglet release du GitHub. <br>
 Importer le projet dans un IDE. <br>
-Lancer le main dans la classe `SchottenTottenApplication` ou tapez `mvn spring-boot:run` dans la console
+Lancer le main dans la classe `SchottenTottenApplication` ou tapez `mvn spring-boot:run` dans la console.<br>
 
 # Accéder au jeu
 Aller à l'URL [127.0.0.1:8080](http://127.0.0.1:8080) une fois le projet lancé.

@@ -1,4 +1,4 @@
-# Schotten-Totten
+# :evergreen_tree: Schotten-Totten
 Lancez-vous dans une lutte où tous les coups sont permis pour  gagner  le  contrôle  de  la  frontière  qui  vous  sépare  de votre adversaire. <br>
 Envoyez les membres de votre tribu défendre les bornes et déployez vos forces en réalisant les meilleures combinaisons de cartes. <br>
 Pour gagner, soyez le premier à contrôler cinq Bornes dispersées le long de la frontière ou trois Bornes adjacentes. <br>

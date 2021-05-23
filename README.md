@@ -6,7 +6,10 @@ Pour gagner, soyez le premier à contrôler cinq Bornes dispersées le long de l
 # Lancer le projet
 Télécharger le code source dans l'onglet release du GitHub. <br>
 Importer le projet dans un IDE. <br>
-Lancer le main dans la classe 'SchottenTottenApplication' ou tapez 'mvn spring-boot:run' dans la console
+Lancer le main dans la classe `SchottenTottenApplication` ou tapez `mvn spring-boot:run` dans la console
+
+# Accéder au jeu
+Aller à l'URL [127.0.0.1:8080](http://127.0.0.1:8080) une fois le projet lancé.
 
 # Crédits
 Ce jeu de cartes a été créé par Reiner Knizia et publié en 1999.

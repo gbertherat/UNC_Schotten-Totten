@@ -7,6 +7,7 @@ import java.util.List;
 public class Combination implements Comparable<Combination>{
     private final List<Card> cards;
     private int sum;
+    private CombinationType combinationType;
 
     public Combination(List<Card> cards){
         this.cards = cards;
@@ -15,6 +16,9 @@ public class Combination implements Comparable<Combination>{
         for (Card clanCard : this.cards) {
             this.sum += clanCard.getStrength();
         }
+        this.combinationType = CombinationType.findFor(this);
+
+
     }
 
     public List<Card> getCards(){
@@ -23,6 +27,10 @@ public class Combination implements Comparable<Combination>{
 
     public int getSum(){
         return this.sum;
+    }
+
+    public CombinationType getCombinationType(){
+        return combinationType;
     }
 
     /**
@@ -35,8 +43,8 @@ public class Combination implements Comparable<Combination>{
         if(this.cards.size() != 3 || combination.cards.size() != 3){
             return -2;
         }
-        CombinationType combinationType1 = CombinationType.findFor(this);
-        CombinationType combinationType2 = CombinationType.findFor(combination);
+        CombinationType combinationType1 = this.combinationType;
+        CombinationType combinationType2 = combination.getCombinationType();
 
         if(combinationType1.ordinal() > combinationType2.ordinal()){
             return -1;
